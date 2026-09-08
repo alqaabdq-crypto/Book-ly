@@ -1,16 +1,17 @@
-# book-ly
+# Book-ly
 
 A bilingual (English / Arabic, RTL) salon-booking marketplace for Saudi Arabia.
 
-**The product was renamed to "book-ly" on 2026-09-05**, having been "Fade" since
-2026-08-25 and "Salon Hub" before that. Each rename covers everything a user
-sees, in both locales — the brand is the Latin word in Arabic too. **The
-repository followed on 2026-09-08**, and GitHub redirects the old path.
+**The product was renamed to "Book-ly" on 2026-09-05**, having been "Fade" since
+2026-08-25 and "Salon Hub" before that, and capitalised on 2026-09-08. Each
+rename covers everything a user sees, in both locales — the brand is the Latin
+word in Arabic too. **The repository followed**, and GitHub redirects the old
+paths.
 
-The package name followed the same day. What still carries the original name is
-the Postgres database, its role, and the seeded `@salonhub.sa` demo accounts —
-and that one cannot change without a re-seed, which would destroy the demo
-payment data every revenue figure rests on. See PROGRESS.md.
+⚠️ **The npm package stays `book-ly`, lowercase: npm forbids capitals in package
+names.** So does the Postgres database, its role, and the seeded `@salonhub.sa`
+demo accounts — and that one cannot change without a re-seed, which would destroy
+the demo payment data every revenue figure rests on. See PROGRESS.md.
 
 Customers discover and book salons — by city, by search, or by what is **nearest
 to them on a map** — then pay in SAR through Moyasar. Salon owners manage their

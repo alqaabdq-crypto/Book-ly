@@ -20,7 +20,43 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"rename the folder too."*
+**Asked (2026-09-08, latest):** *"now please start the name of the project with
+capital B."*
+
+**Answered:** The brand is **Book-ly** everywhere a user sees it — both message
+catalogs (title, nav brand, the commission hint, the testimonials subtitle, the
+support-reply sender), the `<title>`, the Moyasar invoice description that shows
+on a card statement, the admin display name in the seed *and* in the live row,
+the README and this file's heading. The **GitHub repo was recased to
+`Book-ly`** to match; GitHub redirects the old path as before.
+
+**The two-face wordmark takes the capital well, which was the thing to check.**
+"Book" is the serif half, so the capital lands in Crimson Pro's B against the
+Kanit italic "-ly" — screenshot-verified at header size rather than assumed. The
+split logic needed nothing: it cuts on the hyphen, so it now yields "Book" and
+"-ly" without being told.
+
+⚠️ **Two things cannot follow the capital, and both are permanent-ish.**
+
+- **npm forbids uppercase in package names.** `package.json` stays `book-ly`.
+  This is not a preference — the registry rejects capitals outright, so it will
+  never match the brand.
+- **The Postgres database, its role and the seeded `@salonhub.sa` logins** still
+  carry the *original* name, capital or not, for the reason they always have: a
+  re-seed destroys the 42 settled payments.
+
+**The folder case was deliberately left alone.** Windows treats paths
+case-insensitively, so recasing `…\claude\book-ly` shows in Explorer and nowhere
+else — and a path change is exactly what broke the Prisma client an hour ago.
+Not worth re-running that for an invisible capital.
+
+**Verified:** typecheck, lint and 81 tests clean; a rebuild; `<title>` reads
+Book-ly and **zero** lowercase `book-ly` remains in the rendered HTML of `/en`;
+and the wordmark splits into "Book" + "-ly" across the two faces.
+
+---
+
+**Asked (2026-09-08):** *"rename the folder too."*
 
 **Answered:** Both folders. The project is now
 `C:\Users\Admin\OneDrive\Desktop\claude\book-ly`, and its production build copy
@@ -2423,12 +2459,18 @@ and pushing without being touched — but a redirect is a courtesy, not a
 guarantee, and anything written down (CI config, a bookmark, a README badge)
 should be moved to the new URL rather than left to rely on it.
 
-**The npm package and both folders followed on the same day.** The project lives
-at `C:\Users\Admin\OneDrive\Desktop\claude\book-ly` and its production build copy
-at `C:\temp\book-ly-live`. ⚠️ **The old name now survives in exactly one
-place:** the Postgres database, its role, and the seeded `@salonhub.sa` logins —
-which cannot change without a re-seed that destroys the 42 settled payments every
-revenue figure here rests on. Leave it until there is real data worth keeping.
+**The npm package and both folders followed on the same day**, and the repo was
+recased to `Book-ly` when the brand was. The project lives at
+`C:\Users\Admin\OneDrive\Desktop\claude\book-ly` and its production build copy at
+`C:\temp\book-ly-live` — folder case left alone deliberately: on Windows it is
+invisible, and a path change is what broke the Prisma client the last time.
+
+⚠️ **Two things cannot follow the capital B.** **npm forbids uppercase in package
+names**, so `package.json` stays `book-ly` and always will. And the **Postgres
+database, its role, and the seeded `@salonhub.sa` logins** still carry the
+original name entirely — changing those needs a re-seed that destroys the 42
+settled payments every revenue figure here rests on. Leave it until there is real
+data worth keeping.
 
 The M1–M5 core is functionally complete; on top of it sit the 2026-07-27 UI
 session, the 2026-08-04 maps work, photos, customer service and admin revenue

@@ -8,7 +8,7 @@ const RATINGS = [5, 4, 3, 2, 1];
 const inputClass =
   "w-full rounded-lg border border-hairline bg-surface/60 px-3 py-2 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/30";
 
-// Testimonials about book-ly, pinned to the bottom of the landing page. The
+// Testimonials about Book-ly, pinned to the bottom of the landing page. The
 // form is a plain Server Action post — works with JavaScript disabled, like the
 // rest of the site.
 export async function SiteReviews({

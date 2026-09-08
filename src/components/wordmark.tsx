@@ -35,7 +35,7 @@ export function Wordmark({
     // honest description of it.
     //
     // No gap and no whitespace between the spans: they are one word, and a
-    // screen reader must read "book-ly", not "book" then "-ly".
+    // screen reader must read "Book-ly", not "Book" then "-ly".
     <span
       dir="ltr"
       className={`text-gradient-brand logo-word inline-flex items-baseline ${className}`}

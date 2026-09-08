@@ -1,8 +1,8 @@
-// The book-ly mark: a pair of open shears knocked out of the brand chip.
+// The Book-ly mark: a pair of open shears knocked out of the brand chip.
 //
 // Why shears and not a calendar, a clock or a bookmark — all of which were
 // drawn and rejected: the *name* already says booking. A calendar mark repeats
-// what "book-ly" has said and leaves the trade unstated; the shears say the part
+// what "Book-ly" has said and leaves the trade unstated; the shears say the part
 // the name cannot, and the lockup then carries both halves of the proposition.
 // They also survive the size that matters. The header renders this at 24px, and
 // at 24px a calendar's slots and a bookmark's notch both close up, while two

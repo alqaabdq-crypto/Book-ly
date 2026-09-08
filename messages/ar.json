@@ -1,12 +1,12 @@
 {
   "Landing": {
-    "title": "book-ly",
+    "title": "Book-ly",
     "subtitle": "ابحث واحجز في أفضل الصالونات في المملكة العربية السعودية.",
     "cta": "ابدأ الآن",
     "browse": "تصفح الصالونات"
   },
   "Nav": {
-    "brand": "book-ly",
+    "brand": "Book-ly",
     "salons": "الصالونات",
     "dashboard": "لوحة التحكم",
     "login": "تسجيل الدخول",
@@ -186,7 +186,7 @@
     "revGross": "إجمالي المعالَج",
     "revGrossHint": "إجمالي ما دُفع من العملاء",
     "revFees": "رسوم المنصة",
-    "revFeesHint": "العمولة التي تأخذها book-ly",
+    "revFeesHint": "العمولة التي تأخذها Book-ly",
     "revPaidCount": "حجوزات مدفوعة",
     "revPaidHint": "مدفوعات ناجحة",
     "revAwaiting": "{amount} بانتظار التحويل",
@@ -335,7 +335,7 @@
   },
   "SiteReviews": {
     "title": "محبوب من مجتمعنا",
-    "subtitle": "اطّلع على آراء الناس حول book-ly — وأضِف رأيك.",
+    "subtitle": "اطّلع على آراء الناس حول Book-ly — وأضِف رأيك.",
     "nameLabel": "اسمك",
     "namePlaceholder": "مثال: سارة أ.",
     "ratingLabel": "التقييم",
@@ -388,7 +388,7 @@
     "errorTooMany": "لديك عدة طلبات مفتوحة بالفعل. سنجيب عليها أولًا قبل إرسال طلب جديد.",
     "yourRequests": "طلباتك",
     "noRequests": "لم ترسل لنا شيئًا بعد.",
-    "replyFrom": "دعم book-ly",
+    "replyFrom": "دعم Book-ly",
     "statusOPEN": "مفتوح",
     "statusANSWERED": "تم الرد",
     "statusRESOLVED": "تم الحل",

@@ -24,7 +24,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-background/70 backdrop-blur-md">
       {/* whitespace-nowrap throughout: at 393px this nav is tight enough that
-          flex will otherwise break "book-ly" and "Log out" across two lines
+          flex will otherwise break "Book-ly" and "Log out" across two lines
           mid-phrase. Wrapping the row is fine; wrapping a label is not. */}
       <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-2 p-4 sm:gap-x-4">
         <LogoLockup href="/" className="flex items-center gap-2 rounded-xl whitespace-nowrap">

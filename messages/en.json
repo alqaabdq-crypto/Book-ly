@@ -1,12 +1,12 @@
 {
   "Landing": {
-    "title": "book-ly",
+    "title": "Book-ly",
     "subtitle": "Find and book trusted salons across Saudi Arabia.",
     "cta": "Get started",
     "browse": "Browse salons"
   },
   "Nav": {
-    "brand": "book-ly",
+    "brand": "Book-ly",
     "salons": "Salons",
     "dashboard": "Dashboard",
     "login": "Log in",
@@ -186,7 +186,7 @@
     "revGross": "Gross processed",
     "revGrossHint": "Total charged to customers",
     "revFees": "Platform fees",
-    "revFeesHint": "Commission taken by book-ly",
+    "revFeesHint": "Commission taken by Book-ly",
     "revPaidCount": "Paid bookings",
     "revPaidHint": "Successful payments",
     "revAwaiting": "{amount} awaiting payout",
@@ -335,7 +335,7 @@
   },
   "SiteReviews": {
     "title": "Loved by our community",
-    "subtitle": "See what people say about book-ly — and add your own.",
+    "subtitle": "See what people say about Book-ly — and add your own.",
     "nameLabel": "Your name",
     "namePlaceholder": "e.g. Sara A.",
     "ratingLabel": "Rating",
@@ -388,7 +388,7 @@
     "errorTooMany": "You already have several open requests. We will answer those first before you send another.",
     "yourRequests": "Your requests",
     "noRequests": "You have not sent us anything yet.",
-    "replyFrom": "book-ly support",
+    "replyFrom": "Book-ly support",
     "statusOPEN": "Open",
     "statusANSWERED": "Answered",
     "statusRESOLVED": "Resolved",
