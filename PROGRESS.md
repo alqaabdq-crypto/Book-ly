@@ -20,7 +20,43 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"now please start the name of the project with
+**Asked (2026-09-08, latest):** *"rename the folder case too."*
+
+**Answered:** Both folders now carry the capital:
+`C:\Users\Admin\OneDrive\Desktop\claude\Book-ly` and `C:\temp\Book-ly-live`. The
+previous entry argued this was invisible and not worth the risk; the owner asked
+anyway, and it went through cleanly — so the argument was right about *invisible*
+and wrong about *risky*, for one reason.
+
+**A case-only rename needs two steps on Windows.** The filesystem is
+case-insensitive, so `book-ly` → `Book-ly` is a rename onto itself and fails.
+Both went via a throwaway name — `book-ly` → `book-ly-casetmp` → `Book-ly`.
+
+**And the first step still had to be retried**, because something in the
+OneDrive-synced tree held a handle: *the process cannot access the file because it
+is being used by another process*, with only Explorer, OneDrive and SearchIndexer
+running. A second attempt seconds later succeeded with nothing changed. **Retry
+before hunting the handle** — on this tree the holder is transient.
+
+**No Prisma breakage this time, because the lesson from an hour earlier was
+applied up front:** `.next` was deleted *before* rebuilding rather than after the
+server started 500-ing. That is the whole difference between a two-minute job and
+a confusing one.
+
+**Verified:** git intact at `745892e` with a clean tree and the remote still
+`alqaabdq-crypto/Book-ly`; typecheck and 81 tests pass from the recased path; a
+clean rebuild; and the tunnel serves `/en`, `/ar`, `/en/salons` and
+`/en/auth/login` at 200 with the title reading Book-ly. The hostname survived
+again — `cloudflared` was never stopped, and only the directory the server starts
+from moved.
+
+**Everything that can carry the capital now does.** What is left is what cannot:
+the npm package (npm forbids uppercase) and the Postgres database, role and
+`@salonhub.sa` logins (a re-seed would destroy the payment data).
+
+---
+
+**Asked (2026-09-08):** *"now please start the name of the project with
 capital B."*
 
 **Answered:** The brand is **Book-ly** everywhere a user sees it — both message
@@ -60,7 +96,7 @@ and the wordmark splits into "Book" + "-ly" across the two faces.
 
 **Answered:** Both folders. The project is now
 `C:\Users\Admin\OneDrive\Desktop\claude\book-ly`, and its production build copy
-is `C:\temp\book-ly-live` — renaming only the first would have left the path that
+is `C:\temp\Book-ly-live` — renaming only the first would have left the path that
 is actually wired into the tunnel still saying salon-hub.
 
 ⚠️ **This broke the running site, and the reason is worth keeping.** Prisma 7
@@ -2136,7 +2172,7 @@ failure better seen once, run by hand, than buried in build logs.
 ### The tunnel, for reference
 
 ```bash
-cd /c/temp/book-ly-live && npx next start -p 3111       # production build, outside OneDrive
+cd /c/temp/Book-ly-live && npx next start -p 3111       # production build, outside OneDrive
 /c/temp/cloudflared.exe tunnel --url http://localhost:3111 --no-autoupdate
 ```
 
@@ -2314,7 +2350,13 @@ The milestone table says shipped; this says what "shipped" does not mean.
   and one build fixed it.
 - **Git Bash `mv` can refuse a folder inside OneDrive** with *Device or resource
   busy* while PowerShell's `Rename-Item` succeeds on the same path, same moment.
-  Reach for `Rename-Item` rather than hunting for the handle.
+  Reach for `Rename-Item` rather than hunting for the handle — and if that fails
+  too (*used by another process*, with only Explorer, OneDrive and SearchIndexer
+  running), **just retry**: on this tree the holder is transient and a second
+  attempt seconds later goes through.
+- **A case-only rename needs a throwaway name in between.** Windows is
+  case-insensitive, so `book-ly` → `Book-ly` is a rename onto itself and fails;
+  go `book-ly` → `book-ly-casetmp` → `Book-ly`.
 - ⚠️ **`npm audit fix --force` would downgrade this project.** Run on
   2026-09-08 it proposed **prisma@6.19.3** — a major version *backwards* from the
   7.x this schema and generated client are built against — to clear advisories in
@@ -2322,7 +2364,7 @@ The milestone table says shipped; this says what "shipped" does not mean.
   (`npm install next@… next-auth@… sharp@…`) and re-run `npm audit --omit=dev`
   to see what actually moved. **Read what `--force` intends to install before
   running it; it optimises for a clean report, not a working build.**
-- **A build in `C:\temp\book-ly-live` must go through `npm run build`, not
+- **A build in `C:\temp\Book-ly-live` must go through `npm run build`, not
   `npx next build`.** The script is `prisma generate && next build`, and after a
   schema change the copy's generated client is stale — `next build` alone fails
   type-checking on the new columns while the source tree, which was generated
@@ -2459,11 +2501,10 @@ and pushing without being touched — but a redirect is a courtesy, not a
 guarantee, and anything written down (CI config, a bookmark, a README badge)
 should be moved to the new URL rather than left to rely on it.
 
-**The npm package and both folders followed on the same day**, and the repo was
-recased to `Book-ly` when the brand was. The project lives at
-`C:\Users\Admin\OneDrive\Desktop\claude\book-ly` and its production build copy at
-`C:\temp\book-ly-live` — folder case left alone deliberately: on Windows it is
-invisible, and a path change is what broke the Prisma client the last time.
+**The npm package and both folders followed on the same day**, and the repo, the
+brand and both folder names were recased to `Book-ly` together. The project lives
+at `C:\Users\Admin\OneDrive\Desktop\claude\Book-ly` and its production build copy at
+`C:\temp\Book-ly-live`.
 
 ⚠️ **Two things cannot follow the capital B.** **npm forbids uppercase in package
 names**, so `package.json` stays `book-ly` and always will. And the **Postgres
