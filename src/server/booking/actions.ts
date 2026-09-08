@@ -12,6 +12,7 @@ import {
 } from "@/server/booking/schedule";
 import { setBookingStatus } from "@/server/booking/status";
 import { refundIfPaid } from "@/server/payments/service";
+import { consumeRateLimit, LIMITS } from "@/server/security/rate-limit";
 import {
   addDays,
   isIsoDate,
@@ -88,6 +89,21 @@ export async function createBooking(formData: FormData): Promise<void> {
   // customer account, and /account is CUSTOMER-only.
   if (session.user.role !== "CUSTOMER") {
     return redirect({ href: "/", locale });
+  }
+
+  // A PENDING booking holds staff for HOLD_MINUTES, so an unthrottled account
+  // can freeze a salon's whole day for the cost of a few POSTs. Keyed by the
+  // customer, because that is what a booking costs to make.
+  const attempt = await consumeRateLimit({
+    key: `booking:${session.user.id}`,
+    ...LIMITS.booking,
+  });
+
+  if (!attempt.allowed) {
+    return redirect({
+      href: bookingPath(slug, { date, services: serviceIds, error: "throttled" }),
+      locale,
+    });
   }
 
   const today = riyadhToday(new Date());

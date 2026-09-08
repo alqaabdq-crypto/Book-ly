@@ -1,4 +1,4 @@
-// Prisma schema for Salon Hub.
+// Prisma schema for Fade.
 //
 // M1 shipped auth only. M2 (this revision) applies the three confirmed product
 // decisions — see README.md: bilingual catalog, multi-service bookings, and a
@@ -98,6 +98,7 @@ model User {
   favorites Favorite[]
 
   supportTickets SupportTicket[]
+  siteReviews    SiteReview[]
 }
 
 // Catalog copy is bilingual (see README). `slug` stays single — it is URL-safe
@@ -428,7 +429,7 @@ model Review {
   @@index([salonId])
 }
 
-/// Reviews of the Salon Hub platform itself (testimonials), shown at the bottom
+/// Reviews of the Fade platform itself (testimonials), shown at the bottom
 /// of the landing page. Unlike Review, these are not tied to a booking or salon.
 enum SupportStatus {
   OPEN
@@ -483,13 +484,37 @@ model SupportTicket {
 }
 
 model SiteReview {
-  id        String   @id @default(cuid())
-  name      String
-  rating    Int
+  id     String @id @default(cuid())
+  name   String
+  rating Int
+
+  /// Who wrote it. Nullable because the rows written while the form was open to
+  /// anonymous posts predate the account requirement — they are kept rather than
+  /// deleted, and a null here is exactly the marker of one.
+  authorId String?
+  author   User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
   comment   String
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+  @@index([authorId])
+}
+
+/// A fixed-window counter, keyed by whatever the caller is limiting on.
+///
+/// In Postgres rather than in memory on purpose: the app is meant to run on a
+/// host that keeps several instances alive, and a per-process Map would give
+/// each instance its own private allowance — six instances, six times the limit,
+/// and no way to tell from the outside. One row per key per window is a write
+/// the database barely notices and every instance agrees on.
+model RateLimit {
+  /// Composite of action and subject, e.g. "login:someone@example.com".
+  key         String   @id
+  count       Int      @default(0)
+  windowStart DateTime @default(now())
+
+  @@index([windowStart])
 }
 
 model Favorite {

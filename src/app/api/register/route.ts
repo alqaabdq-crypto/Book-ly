@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/server/db/prisma";
+import {
+  callerIpFrom,
+  consumeRateLimit,
+  LIMITS,
+} from "@/server/security/rate-limit";
 
 const registerSchema = z.object({
   email: z.email(),
@@ -12,6 +17,21 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  // Keyed by IP because there is no account yet to key by. This is what stops a
+  // script from filling the users table — and, with it, the salon-owner queue
+  // the admin has to work through.
+  const attempt = await consumeRateLimit({
+    key: `register:${callerIpFrom(request)}`,
+    ...LIMITS.register,
+  });
+
+  if (!attempt.allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(attempt.retryAfterMs / 1000)) } },
+    );
+  }
+
   const body = await request.json();
   const parsed = registerSchema.safeParse(body);
 

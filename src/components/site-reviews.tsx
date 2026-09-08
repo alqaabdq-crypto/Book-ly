@@ -1,4 +1,6 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { auth } from "@/server/auth/config";
 import { prisma } from "@/server/db/prisma";
 import { createSiteReview } from "@/server/site-review/actions";
 
@@ -6,7 +8,7 @@ const RATINGS = [5, 4, 3, 2, 1];
 const inputClass =
   "w-full rounded-lg border border-hairline bg-surface/60 px-3 py-2 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/30";
 
-// Testimonials about Salon Hub, pinned to the bottom of the landing page. The
+// Testimonials about book-ly, pinned to the bottom of the landing page. The
 // form is a plain Server Action post — works with JavaScript disabled, like the
 // rest of the site.
 export async function SiteReviews({
@@ -18,6 +20,10 @@ export async function SiteReviews({
 }) {
   const t = await getTranslations("SiteReviews");
   const format = await getFormatter();
+  // Posting requires an account (see createSiteReview). Showing a form that the
+  // action would refuse is worse than showing the reason, so signed-out visitors
+  // get the invitation to sign in instead of a form that throws their words away.
+  const session = await auth();
 
   const reviews = await prisma.siteReview.findMany({
     orderBy: { createdAt: "desc" },
@@ -41,6 +47,22 @@ export async function SiteReviews({
           {t("successMsg")}
         </p>
       )}
+      {status === "signin" && (
+        <p
+          role="alert"
+          className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-center text-sm font-medium text-amber-300"
+        >
+          {t("signInMsg")}
+        </p>
+      )}
+      {status === "throttled" && (
+        <p
+          role="alert"
+          className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-center text-sm font-medium text-amber-300"
+        >
+          {t("throttledMsg")}
+        </p>
+      )}
       {status === "error" && (
         <p
           role="alert"
@@ -51,7 +73,15 @@ export async function SiteReviews({
       )}
 
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[1fr_1.25fr]">
-        {/* Submit form. */}
+        {/* Submit form — signed-in visitors only. */}
+        {!session?.user ? (
+          <div className="glass shadow-depth flex flex-col items-start gap-3 rounded-3xl p-6">
+            <p className="text-sm text-muted">{t("signInPrompt")}</p>
+            <Link href="/auth/login" className="btn-brand rounded-full px-5 py-2 text-sm">
+              {t("signInCta")}
+            </Link>
+          </div>
+        ) : (
         <form
           action={createSiteReview}
           className="glass shadow-depth flex flex-col gap-4 rounded-3xl p-6"
@@ -105,6 +135,7 @@ export async function SiteReviews({
             {t("submit")}
           </button>
         </form>
+        )}
 
         {/* Existing reviews. */}
         {reviews.length === 0 ? (

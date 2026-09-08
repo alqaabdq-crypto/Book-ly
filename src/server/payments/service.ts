@@ -117,6 +117,30 @@ export async function settleFromGateway(
   if (!payment) return { settled: false };
 
   if (isPaidStatus(gateway.status)) {
+    // The gateway's amount is checked against what we invoiced before a single
+    // figure derived from it is written.
+    //
+    // Everything downstream — the fee, the salon's net, every total on both
+    // revenue pages — is computed from `gateway.amount`. Taking that on trust
+    // means a payload that disagrees with the invoice silently books a
+    // commission on a number we never charged, and nothing in the system would
+    // ever contradict it: the booking would read CONFIRMED and the money would
+    // reconcile against itself.
+    //
+    // The webhook's shared secret proves the *sender*, not the *contents*. This
+    // is the check on the contents, and it is a refusal rather than a
+    // correction: an amount mismatch is either a partial capture, a currency
+    // mistake, or something wrong enough that a human should look before a
+    // salon is credited.
+    const expected = sarToHalalas(payment.amount.toString());
+
+    if (gateway.amount !== expected) {
+      console.error(
+        `[moyasar] amount mismatch on booking ${bookingId}: gateway ${gateway.amount} vs invoiced ${expected} — not settled`,
+      );
+      return { settled: false, bookingId };
+    }
+
     // Already settled: keep the fee that was agreed at capture.
     if (payment.status !== "SUCCEEDED") {
       const salon = payment.booking.salon;

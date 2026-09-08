@@ -3,6 +3,11 @@ import type { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/server/db/prisma";
+import {
+  consumeRateLimit,
+  LIMITS,
+  resetRateLimit,
+} from "@/server/security/rate-limit";
 import type { Role } from "@/generated/prisma/client";
 
 // `JWT` (from @auth/core/jwt) extends Record<string, unknown>, so `id`/`role`
@@ -51,6 +56,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        // Throttled before the hash comparison, and keyed by the email being
+        // attacked rather than by the caller: an attacker rotates IPs freely,
+        // but every attempt against one account has to land on that account's
+        // counter. The refusal is the same `null` a wrong password returns, so
+        // this never tells a caller which of the two happened.
+        const limitKey = `login:${email.toLowerCase()}`;
+        const attempt = await consumeRateLimit({ key: limitKey, ...LIMITS.login });
+
+        if (!attempt.allowed) return null;
+
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user?.passwordHash) {
           return null;
@@ -60,6 +75,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!isValid) {
           return null;
         }
+
+        // The window counts failures, so proving you own the account clears it.
+        // Otherwise a person signing in on three devices spends the same budget
+        // an attacker does.
+        await resetRateLimit(limitKey);
 
         return {
           id: user.id,
