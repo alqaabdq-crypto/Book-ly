@@ -20,7 +20,31 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"rename the repo to book-ly."*
+**Asked (2026-09-08, latest):** *"rename the npm package too."*
+
+**Answered:** Done — `"name": "book-ly"` in `package.json`, and both places the
+lockfile repeats it (the root `name` and `packages[""].name`; editing only the
+manifest leaves the lockfile disagreeing with it, which `npm install` then
+rewrites at an unpredictable moment).
+
+**Nothing depends on this name, which is why it was safe.** Nothing in `src/`,
+`scripts/` or `prisma/` reads it, the package is `"private": true` and has never
+been published, and its only visible effect is the prefix npm prints on script
+output — now `book-ly@0.1.0 test` instead of `salon-hub@0.1.0 test`. Re-verified
+after the change: typecheck, lint and 81 tests clean, and `npm install` was a
+no-op beyond the rename, so no dependency was disturbed.
+
+**The old name now survives in exactly two places, and only one of them matters:**
+the working folder (`…\Desktop\claude\salon-hub`, whose build copy
+`C:\temp\salon-hub-live` is wired into the tunnel and every deployment note), and
+the **Postgres database, its role, and the seeded `@salonhub.sa` logins** — which
+cannot change without a re-seed that destroys the 42 settled payments every
+revenue figure in this document rests on. The folder is a rename plus two path
+updates whenever it is wanted; the database should wait for real data.
+
+---
+
+**Asked (2026-09-08):** *"rename the repo to book-ly."*
 
 **Answered:** Done — **`github.com/alqaabdq-crypto/book-ly`**. This is the
 decision that was offered on 2026-08-25 and declined then; it is now taken.
@@ -478,8 +502,8 @@ testimonials subtitle, the support-reply sender), the `<title>` metadata, the
 Moyasar invoice description (`book-ly — {salon}`, which is what shows on a card
 statement), the seed's admin display name, the README heading, and three code
 comments that named the old brand. **Still carrying the original name on purpose:**
-the GitHub repo (`alqaabdq-crypto/salon-hub` — **renamed to `book-ly` on
-2026-09-08**), the npm package, the folder, the
+the GitHub repo and the npm package (both **renamed to `book-ly` on
+2026-09-08**), the folder, the
 Postgres database and role, and the seeded `@salonhub.sa` logins — renaming those
 means a re-seed, which destroys the payment data every revenue figure rests on.
 The live admin's *display name* was updated in the database to "book-ly Admin",
@@ -2345,9 +2369,8 @@ renamed at the owner's request after the decision was declined once on
 2026-08-25. GitHub redirects the old path, so an existing clone keeps fetching
 and pushing without being touched — but a redirect is a courtesy, not a
 guarantee, and anything written down (CI config, a bookmark, a README badge)
-should be moved to the new URL rather than left to rely on it. ⚠️ **The old name
-is deliberately still in three places:** the npm package (`salon-hub` in
-`package.json`), the working folder
+should be moved to the new URL rather than left to rely on it. The **npm package** is `book-ly` too, renamed the same day. ⚠️ **The old name is
+deliberately still in two places:** the working folder
 (`C:UsersAdminOneDriveDesktopclaudesalon-hub`, whose build copy path
 `C:	empsalon-hub-live` is wired into the tunnel), and the Postgres
 database/role plus the seeded `@salonhub.sa` logins — the last of which cannot

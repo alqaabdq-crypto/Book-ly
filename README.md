@@ -7,10 +7,10 @@ A bilingual (English / Arabic, RTL) salon-booking marketplace for Saudi Arabia.
 sees, in both locales — the brand is the Latin word in Arabic too. **The
 repository followed on 2026-09-08**, and GitHub redirects the old path.
 
-The npm package name, the Postgres database and the seeded `@salonhub.sa` demo
-accounts still carry the original name. The last of those cannot change without a
-re-seed, which would destroy the demo payment data every revenue figure rests on.
-See PROGRESS.md.
+The package name followed the same day. What still carries the original name is
+the Postgres database, its role, and the seeded `@salonhub.sa` demo accounts —
+and that one cannot change without a re-seed, which would destroy the demo
+payment data every revenue figure rests on. See PROGRESS.md.
 
 Customers discover and book salons — by city, by search, or by what is **nearest
 to them on a map** — then pay in SAR through Moyasar. Salon owners manage their
