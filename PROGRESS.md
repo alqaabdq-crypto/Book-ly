@@ -20,7 +20,36 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"update the progress report with the new
+**Asked (2026-09-08, latest):** *"rename the repo to book-ly."*
+
+**Answered:** Done — **`github.com/alqaabdq-crypto/book-ly`**. This is the
+decision that was offered on 2026-08-25 and declined then; it is now taken.
+
+**Nothing breaks, and one thing is worth knowing about why.** GitHub redirects
+the old path, so an existing clone keeps fetching and pushing untouched, and the
+local remote was rewritten to the new URL by the rename itself. **But a redirect
+is a courtesy, not a guarantee** — and it stops working the moment anyone creates
+a new repository under the old name. Anything written down (CI config, a bookmark,
+a badge) should be moved rather than left leaning on it.
+
+⚠️ **The old name is still in three places, and each has a different reason:**
+
+- **The npm package** is still `salon-hub` in `package.json`. Nothing publishes
+  it, so it is cosmetic — say the word and it changes.
+- **The working folder** is still `…\Desktop\claude\salon-hub`, and its build copy
+  `C:\temp\salon-hub-live` is wired into the tunnel and the deployment notes.
+  Renaming it means re-pointing both.
+- **The Postgres database, its role, and the seeded `@salonhub.sa` logins** stay,
+  and this one is not cosmetic: changing them means a re-seed, which destroys the
+  42 settled payments every revenue figure in this document rests on.
+
+`README.md` and the two places in this file that describe the *current* repo were
+updated. Historical entries keep the name they were written with — rewriting them
+would make the commit messages and the document disagree.
+
+---
+
+**Asked (2026-09-08):** *"update the progress report with the new
 updates"* — and, mid-run, *"and github"*.
 
 **Answered:** The per-request entries were **already current** — the blocker
@@ -449,7 +478,8 @@ testimonials subtitle, the support-reply sender), the `<title>` metadata, the
 Moyasar invoice description (`book-ly — {salon}`, which is what shows on a card
 statement), the seed's admin display name, the README heading, and three code
 comments that named the old brand. **Still carrying the original name on purpose:**
-the GitHub repo (`alqaabdq-crypto/salon-hub`), the npm package, the folder, the
+the GitHub repo (`alqaabdq-crypto/salon-hub` — **renamed to `book-ly` on
+2026-09-08**), the npm package, the folder, the
 Postgres database and role, and the seeded `@salonhub.sa` logins — renaming those
 means a re-seed, which destroys the payment data every revenue figure rests on.
 The live admin's *display name* was updated in the database to "book-ly Admin",
@@ -2310,11 +2340,18 @@ are level again, and a fresh clone now reproduces the running site. The warning
 that stood here for two weeks (that a stray `git checkout` would destroy the
 lot) is finally gone.
 
-**The public repo is still `github.com/alqaabdq-crypto/salon-hub`** and the npm
-package is still `salon-hub` — the rename was deliberately scoped to what a user
-sees. Anyone cloning it gets a project called Salon Hub whose UI says book-ly;
-that mismatch is now the *only* thing stale about the published repo, and
-renaming it remains an open decision, declined once on 2026-08-25.
+**The public repo is `github.com/alqaabdq-crypto/book-ly`** as of 2026-09-08,
+renamed at the owner's request after the decision was declined once on
+2026-08-25. GitHub redirects the old path, so an existing clone keeps fetching
+and pushing without being touched — but a redirect is a courtesy, not a
+guarantee, and anything written down (CI config, a bookmark, a README badge)
+should be moved to the new URL rather than left to rely on it. ⚠️ **The old name
+is deliberately still in three places:** the npm package (`salon-hub` in
+`package.json`), the working folder
+(`C:UsersAdminOneDriveDesktopclaudesalon-hub`, whose build copy path
+`C:	empsalon-hub-live` is wired into the tunnel), and the Postgres
+database/role plus the seeded `@salonhub.sa` logins — the last of which cannot
+change without a re-seed that destroys the demo payment data.
 
 The M1–M5 core is functionally complete; on top of it sit the 2026-07-27 UI
 session, the 2026-08-04 maps work, photos, customer service and admin revenue
