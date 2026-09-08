@@ -1,12 +1,12 @@
 {
   "Landing": {
-    "title": "Salon Hub",
+    "title": "book-ly",
     "subtitle": "Find and book trusted salons across Saudi Arabia.",
     "cta": "Get started",
     "browse": "Browse salons"
   },
   "Nav": {
-    "brand": "Salon Hub",
+    "brand": "book-ly",
     "salons": "Salons",
     "dashboard": "Dashboard",
     "login": "Log in",
@@ -57,7 +57,17 @@
     "bookedPayNext": "Booking held. Pay within 20 minutes to confirm it — unpaid holds are released.",
     "errorRefund": "Your booking is cancelled, but the refund did not go through. Our team will sort it out and contact you.",
     "errorGateway": "We could not reach the payment provider. Please try again in a moment.",
-    "errorGeneric": "Something went wrong. Please try again."
+    "errorGeneric": "Something went wrong. Please try again.",
+    "reviewTitle": "How was your visit?",
+    "reviewRating": "Rating",
+    "reviewComment": "Your review (optional)",
+    "reviewPlaceholder": "Tell others what the visit was like…",
+    "reviewSubmit": "Post review",
+    "reviewYours": "Your review",
+    "reviewOk": "Thanks — your review is live on the salon's page.",
+    "reviewDuplicate": "You have already reviewed that visit.",
+    "reviewIneligible": "You can only review a visit the salon has marked completed.",
+    "reviewInvalid": "That review could not be saved. Please try again."
   },
   "Payment": {
     "paidTitle": "Payment received",
@@ -80,7 +90,8 @@
     "customersOnly": "Bookings are made from a customer account.",
     "error_taken": "That time was booked a moment ago. Please choose another.",
     "error_unavailable": "That time is no longer available. Please choose another.",
-    "error_date": "Choose a date within the next {days} days."
+    "error_date": "Choose a date within the next {days} days.",
+    "error_throttled": "You have made a lot of bookings just now. Please try again shortly."
   },
   "BookingStatus": {
     "PENDING": "Awaiting confirmation",
@@ -175,7 +186,7 @@
     "revGross": "Gross processed",
     "revGrossHint": "Total charged to customers",
     "revFees": "Platform fees",
-    "revFeesHint": "Commission taken by Salon Hub",
+    "revFeesHint": "Commission taken by book-ly",
     "revPaidCount": "Paid bookings",
     "revPaidHint": "Successful payments",
     "revAwaiting": "{amount} awaiting payout",
@@ -324,7 +335,7 @@
   },
   "SiteReviews": {
     "title": "Loved by our community",
-    "subtitle": "See what people say about Salon Hub — and add your own.",
+    "subtitle": "See what people say about book-ly — and add your own.",
     "nameLabel": "Your name",
     "namePlaceholder": "e.g. Sara A.",
     "ratingLabel": "Rating",
@@ -334,7 +345,11 @@
     "submit": "Post review",
     "successMsg": "Thanks! Your review has been posted.",
     "errorMsg": "Something wasn’t right — please check your name, rating and review, then try again.",
-    "empty": "No reviews yet — be the first to share your experience."
+    "empty": "No reviews yet — be the first to share your experience.",
+    "signInMsg": "Please sign in to post a review.",
+    "throttledMsg": "You have posted a few reviews today — thank you. Try again tomorrow.",
+    "signInPrompt": "Reviews come from people with an account, so you know who wrote them.",
+    "signInCta": "Sign in to review"
   },
   "Location": {
     "label": "Location on the map",
@@ -373,7 +388,7 @@
     "errorTooMany": "You already have several open requests. We will answer those first before you send another.",
     "yourRequests": "Your requests",
     "noRequests": "You have not sent us anything yet.",
-    "replyFrom": "Salon Hub support",
+    "replyFrom": "book-ly support",
     "statusOPEN": "Open",
     "statusANSWERED": "Answered",
     "statusRESOLVED": "Resolved",

@@ -7,7 +7,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Salon Hub brand system — RedSun-inspired
+   book-ly brand system — RedSun-inspired
    Near-black canvas, a bright "oily olive" accent that glows like a rising sun.
 --------------------------------------------------------------------------- */
 
@@ -40,6 +40,22 @@
   --font-sans: var(--font-geist-sans), var(--font-noto-sans-arabic), ui-sans-serif,
     system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* The display half of the wordmark — "-ly" — and nothing else. The --font-*
+     namespace generates a `font-wordmark` utility, applied to the logo and
+     nowhere else, so body copy stays on Geist.
+
+     Kanit falls back to Geist rather than a generic sans: the span carries
+     `font-style: italic`, so even a fallback slants, and the slant is the half of
+     the pairing that has to survive. */
+  --font-wordmark: var(--font-hype), var(--font-geist-sans), sans-serif;
+  /* The serif half of the wordmark. "Minion Pro" is named first and is not
+     loaded by us — it is an Adobe retail face, so it resolves only on machines
+     that already have it installed. Everyone else gets Crimson Pro, the closest
+     oldstyle serif on Google Fonts, then Georgia, which is on effectively every
+     device. The chain never falls through to a sans: a serif logo that has lost
+     its serif should still read as a serif. */
+  --font-serifmark: "Minion Pro", var(--font-crimson), Georgia,
+    "Times New Roman", serif;
 }
 
 body {
@@ -229,4 +245,185 @@ body {
 
 .leaflet-bar a:hover {
   background: color-mix(in oklab, var(--color-brand) 18%, var(--surface)) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   The interactive logo.
+
+   The whole lockup — chip, shears and name — reacts as one unit to hover, to
+   keyboard focus and to a press. It is CSS only: no JS, no state, and it works
+   on the server-rendered header, which matters because that header renders on
+   every page of the site.
+
+   What happens: the shears close (the two halves rotate toward each other about
+   the pivot), the chip lifts and tilts a few degrees into the cut, the brand
+   gradient sweeps left-to-right across the name, and the "-ly" kicks up. On
+   press the chip snaps down, so a click feels like the snip landing.
+
+   Focus is treated exactly like hover rather than getting a separate treatment:
+   a keyboard user should see the same thing a pointer user sees, and the focus
+   ring is added on top rather than replacing it.
+--------------------------------------------------------------------------- */
+/* The chip is the 3D object. --rx/--ry are written by LogoLockup on pointer
+   move and removed on leave; with no JS, or before the first move, they resolve
+   to 0 and this is a flat chip that still snips and glows on hover.
+
+   perspective() inside the transform rather than a perspective property on the
+   parent: the parent is an inline flex row in a sticky header, and giving that
+   a perspective would make every descendant share one vanishing point — the
+   name would swing with the chip. Scoping it here keeps the tilt on the chip. */
+.logo-chip {
+  transform-style: preserve-3d;
+  transform: perspective(420px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    scale(var(--chip-scale, 1));
+  /* Fast enough to feel attached to the cursor while tracking, slow enough that
+     letting go reads as a settle rather than a snap. */
+  transition:
+    transform 160ms ease-out,
+    box-shadow 280ms ease;
+}
+
+/* The shears sit above the chip's face, so the tilt parallaxes them against it —
+   this is what makes the chip read as an object with depth rather than a
+   picture of one. */
+.logo-chip svg {
+  transform: translateZ(14px);
+}
+
+/* Specular highlight, tracking the pointer. Painted on its own layer above the
+   gradient and below the shears, and clipped by the chip's own radius. */
+.logo-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0) 60%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease;
+  transform: translateZ(6px);
+  pointer-events: none;
+}
+
+.logo-lockup:hover .logo-chip::after {
+  opacity: 1;
+}
+
+.logo-lockup:hover .logo-chip,
+.logo-lockup:focus-visible .logo-chip {
+  --chip-scale: 1.08;
+}
+
+.logo-lockup:active .logo-chip {
+  --chip-scale: 0.94;
+}
+
+/* The name takes a fraction of the chip's rotation. At full strength the two
+   elements swing apart and the lockup stops reading as one piece. */
+.logo-word {
+  transform: perspective(700px) rotateY(calc(var(--ry, 0deg) * 0.35))
+    rotateX(calc(var(--rx, 0deg) * 0.2));
+  transition:
+    background-position 620ms ease,
+    transform 160ms ease-out;
+}
+
+.logo-lockup .shear-a,
+.logo-lockup .shear-b {
+  /* view-box, not the fill-box default: the pivot is a coordinate in the 32x32
+     drawing, and fill-box would resolve it against each group's own bounding
+     box instead — which puts the hinge in a different place for each half. */
+  transform-box: view-box;
+  transform-origin: 16px 13.6px;
+  transition: transform 280ms cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+
+.logo-lockup:hover .shear-a,
+.logo-lockup:focus-visible .shear-a {
+  transform: rotate(11deg);
+}
+
+.logo-lockup:hover .shear-b,
+.logo-lockup:focus-visible .shear-b {
+  transform: rotate(-11deg);
+}
+
+.logo-lockup:hover .logo-chip,
+.logo-lockup:focus-visible .logo-chip {
+  box-shadow: 0 0 20px color-mix(in oklab, var(--color-brand) 45%, transparent);
+}
+
+/* The sweep. The gradient is painted at twice the width and parked at the left,
+   so moving the background position pulls the pale edge across the letterforms
+   instead of cross-fading them. */
+.logo-word {
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+}
+
+.logo-lockup:hover .logo-word,
+.logo-lockup:focus-visible .logo-word {
+  background-position: 100% 50%;
+}
+
+.logo-word-tail {
+  display: inline-block;
+  transition: transform 280ms cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+
+.logo-lockup:hover .logo-word-tail,
+.logo-lockup:focus-visible .logo-word-tail {
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.logo-lockup:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 4px;
+}
+
+/* Motion is decoration here — every state it expresses is already carried by the
+   focus ring and the cursor — so it is removed entirely rather than shortened. */
+@media (prefers-reduced-motion: reduce) {
+  .logo-lockup .shear-a,
+  .logo-lockup .shear-b,
+  .logo-chip,
+  .logo-word,
+  .logo-word-tail {
+    transition: none;
+  }
+
+  .logo-lockup:hover .shear-a,
+  .logo-lockup:focus-visible .shear-a,
+  .logo-lockup:hover .shear-b,
+  .logo-lockup:focus-visible .shear-b,
+  .logo-lockup:hover .logo-chip,
+  .logo-lockup:focus-visible .logo-chip,
+  .logo-lockup:active .logo-chip,
+  .logo-lockup:hover .logo-word-tail,
+  .logo-lockup:focus-visible .logo-word-tail {
+    transform: none;
+  }
+
+  .logo-lockup:hover .logo-word,
+  .logo-lockup:focus-visible .logo-word {
+    background-position: 0% 50%;
+  }
+
+  /* The pointer tilt goes too: LogoLockup keeps writing --rx/--ry, and these
+     rules are what make those values inert. */
+  .logo-chip,
+  .logo-word {
+    transform: none;
+  }
+
+  .logo-chip svg {
+    transform: none;
+  }
+
+  .logo-lockup:hover .logo-chip::after {
+    opacity: 0;
+  }
 }

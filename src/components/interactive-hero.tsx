@@ -3,6 +3,9 @@
 import { useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { BrandMark } from "@/components/brand-mark";
+import { LogoLockup } from "@/components/logo-lockup";
+import { Wordmark } from "@/components/wordmark";
 
 // RedSun-style hero: a centered headline over a glowing olive "sun", with a
 // floating app bar resting on the horizon. The sun and bar parallax gently
@@ -94,9 +97,15 @@ export function InteractiveHero() {
         style={{ transform: "translateX(var(--bar-x, 0px))", transition: "transform 0.3s ease-out" }}
       >
         <div className="glass shadow-depth mx-auto flex max-w-3xl items-center justify-between gap-3 rounded-2xl px-4 py-3">
-          <span className="text-gradient-brand text-sm font-extrabold tracking-tight">
-            {tNav("brand")}
-          </span>
+          {/* The app bar carries the full lockup, mark and wordmark, because it
+              is standing in for the product's own chrome. */}
+          <LogoLockup className="flex items-center gap-2 rounded-lg">
+            <BrandMark className="h-5 w-5 rounded-md" />
+            <Wordmark
+              text={tNav("brand")}
+              size={{ serif: "text-base", display: "text-sm" }}
+            />
+          </LogoLockup>
 
           <div className="hidden items-center gap-5 text-sm text-muted sm:flex">
             {appNav.map(([icon, label]) => (

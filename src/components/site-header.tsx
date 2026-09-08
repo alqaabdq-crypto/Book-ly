@@ -3,6 +3,9 @@ import { auth } from "@/server/auth/config";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { LogoutButton } from "@/components/logout-button";
+import { BrandMark } from "@/components/brand-mark";
+import { LogoLockup } from "@/components/logo-lockup";
+import { Wordmark } from "@/components/wordmark";
 import type { Role } from "@/generated/prisma/client";
 
 const dashboardPathByRole: Record<Role, string> = {
@@ -21,15 +24,18 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-background/70 backdrop-blur-md">
       {/* whitespace-nowrap throughout: at 393px this nav is tight enough that
-          flex will otherwise break "Salon Hub" and "Log out" across two lines
+          flex will otherwise break "book-ly" and "Log out" across two lines
           mid-phrase. Wrapping the row is fine; wrapping a label is not. */}
       <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-2 p-4 sm:gap-x-4">
-        <Link href="/" className="flex items-center gap-2 whitespace-nowrap">
-          <span className="gradient-brand inline-block h-6 w-6 rounded-lg shadow-sm" aria-hidden />
-          <span className="text-gradient-brand text-lg font-extrabold tracking-tight">
-            {t("brand")}
-          </span>
-        </Link>
+        <LogoLockup href="/" className="flex items-center gap-2 rounded-xl whitespace-nowrap">
+          <BrandMark className="h-6 w-6" />
+          {/* Two faces: a Minion-class serif for "book", Anton for "-ly". The
+              display half is set a step down — Anton is condensed and tall, so
+              matching the serif's px would make it read larger, not equal.
+              Hovering or focusing the link snips the shears and sweeps the
+              gradient across the name; see .logo-lockup in globals.css. */}
+          <Wordmark text={t("brand")} size={{ serif: "text-xl", display: "text-lg" }} />
+        </LogoLockup>
         <Link
           href="/salons"
           className="text-sm font-medium whitespace-nowrap text-muted transition hover:text-brand"

@@ -80,7 +80,7 @@ export async function startPayment(formData: FormData): Promise<void> {
 
   const invoice = await createInvoice({
     amountHalalas: sarToHalalas(booking.totalPrice.toString()),
-    description: `Salon Hub — ${booking.salon.nameEn}`,
+    description: `book-ly — ${booking.salon.nameEn}`,
     callbackUrl: `${origin}/${locale}/account/payment-return?booking=${booking.id}`,
     bookingId: booking.id,
     // Expire the invoice with the hold itself, so a link opened tomorrow cannot

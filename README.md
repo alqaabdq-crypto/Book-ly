@@ -1,6 +1,12 @@
-# Salon Hub
+# book-ly
 
 A bilingual (English / Arabic, RTL) salon-booking marketplace for Saudi Arabia.
+
+**The product was renamed to "book-ly" on 2026-09-05**, having been "Fade" since
+2026-08-25 and "Salon Hub" before that. Each rename covers everything a user
+sees, in both locales — the brand is the Latin word in Arabic too. The
+repository, npm package name, Postgres database and the seeded `@salonhub.sa`
+demo accounts still carry the original name — see PROGRESS.md.
 
 Customers discover and book salons — by city, by search, or by what is **nearest
 to them on a map** — then pay in SAR through Moyasar. Salon owners manage their
@@ -183,6 +189,12 @@ consequences that are not optional:
   one per second. It fires on submit, never on keystroke. A production deployment
   with real traffic should self-host a geocoder or buy one; the same goes for the
   tile server.
+
+> A migration to **HudHud Maps** (the Saudi provider — MapLibre vector styles, a
+> real dark variant, native Arabic labels, National Address geocoding) was built
+> on 2026-08-25 and **reverted the same day** at the owner's request, pending a
+> HudHud account. It is not in the tree. PROGRESS.md records what it involved and
+> what it would take to redo.
 
 There is **no PostGIS**. Proximity is a two-step filter: a bounding box in SQL
 (served by `@@index([status, lat, lng])`) narrowed by exact Haversine in JS, which
