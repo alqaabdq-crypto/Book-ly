@@ -20,7 +20,48 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"rename the npm package too."*
+**Asked (2026-09-08, latest):** *"rename the folder too."*
+
+**Answered:** Both folders. The project is now
+`C:\Users\Admin\OneDrive\Desktop\claude\book-ly`, and its production build copy
+is `C:\temp\book-ly-live` — renaming only the first would have left the path that
+is actually wired into the tunnel still saying salon-hub.
+
+⚠️ **This broke the running site, and the reason is worth keeping.** Prisma 7
+generates its client against a **hashed package identity**
+(`@prisma/client-47c0a585693bfa7b`), and that hash moved when the package name
+and the directory did. The server came back up 500-ing with *Cannot find module
+`@prisma/client-47c0a585693bfa7b/runtime/client`*.
+
+**A rebuild did not fix it, which is the actual lesson.** `npm run build` reran
+`prisma generate` and compiled clean — and the server still 500'd with the same
+missing hash. The stale name was not in the generated client at all; it was in
+**Turbopack's persistent cache** under `.next/cache/turbopack/`, which held the
+old external-module reference and kept feeding it back into every rebuild.
+`rm -rf .next` and one more build fixed it in a minute. **After renaming a
+project directory or its package, delete `.next` — regenerating the Prisma client
+is not enough, because the build cache remembers the old name.**
+
+**A second, smaller obstacle:** Git Bash's `mv` refused the project folder with
+*Device or resource busy* — a handle somewhere in a OneDrive-synced tree.
+PowerShell's `Rename-Item` did it without complaint on the first try.
+
+**Verified after both renames:** git is intact and still pointed at
+`alqaabdq-crypto/book-ly` with a clean tree at `ff78a14`; typecheck and 81 tests
+pass from the new path; the tunnel serves `/en`, `/ar`, `/en/salons` and
+`/en/auth/login` at 200 with the title reading book-ly; and the database is
+untouched — 42 settled payments, exactly as before. The tunnel hostname survived
+because `cloudflared` was never stopped: it points at `localhost:3111`, and what
+moved was only the directory the server starts from.
+
+**The old name now survives in exactly one place:** the Postgres database, its
+role, and the seeded `@salonhub.sa` logins. That one cannot change without a
+re-seed that destroys the payment data every revenue figure rests on — leave it
+until there is real data worth keeping.
+
+---
+
+**Asked (2026-09-08):** *"rename the npm package too."*
 
 **Answered:** Done — `"name": "book-ly"` in `package.json`, and both places the
 lockfile repeats it (the root `name` and `packages[""].name`; editing only the
@@ -2059,7 +2100,7 @@ failure better seen once, run by hand, than buried in build logs.
 ### The tunnel, for reference
 
 ```bash
-cd /c/temp/salon-hub-live && npx next start -p 3111     # production build, outside OneDrive
+cd /c/temp/book-ly-live && npx next start -p 3111       # production build, outside OneDrive
 /c/temp/cloudflared.exe tunnel --url http://localhost:3111 --no-autoupdate
 ```
 
@@ -2227,6 +2268,17 @@ The milestone table says shipped; this says what "shipped" does not mean.
 
 ## Environment notes
 
+- ⚠️ **After renaming the project directory or the package, delete `.next`.**
+  Prisma 7 generates its client against a hashed package identity
+  (`@prisma/client-<hash>`), and that hash moves with the name. Regenerating is
+  **not** enough: on 2026-09-08 the rebuilt server still 500'd with *Cannot find
+  module @prisma/client-47c0a585693bfa7b/runtime/client* because the stale
+  reference lived in **Turbopack's persistent cache** under
+  `.next/cache/turbopack/`, which fed it back into every rebuild. `rm -rf .next`
+  and one build fixed it.
+- **Git Bash `mv` can refuse a folder inside OneDrive** with *Device or resource
+  busy* while PowerShell's `Rename-Item` succeeds on the same path, same moment.
+  Reach for `Rename-Item` rather than hunting for the handle.
 - ⚠️ **`npm audit fix --force` would downgrade this project.** Run on
   2026-09-08 it proposed **prisma@6.19.3** — a major version *backwards* from the
   7.x this schema and generated client are built against — to clear advisories in
@@ -2234,7 +2286,7 @@ The milestone table says shipped; this says what "shipped" does not mean.
   (`npm install next@… next-auth@… sharp@…`) and re-run `npm audit --omit=dev`
   to see what actually moved. **Read what `--force` intends to install before
   running it; it optimises for a clean report, not a working build.**
-- **A build in `C:	empsalon-hub-live` must go through `npm run build`, not
+- **A build in `C:\temp\book-ly-live` must go through `npm run build`, not
   `npx next build`.** The script is `prisma generate && next build`, and after a
   schema change the copy's generated client is stale — `next build` alone fails
   type-checking on the new columns while the source tree, which was generated
@@ -2369,12 +2421,14 @@ renamed at the owner's request after the decision was declined once on
 2026-08-25. GitHub redirects the old path, so an existing clone keeps fetching
 and pushing without being touched — but a redirect is a courtesy, not a
 guarantee, and anything written down (CI config, a bookmark, a README badge)
-should be moved to the new URL rather than left to rely on it. The **npm package** is `book-ly` too, renamed the same day. ⚠️ **The old name is
-deliberately still in two places:** the working folder
-(`C:UsersAdminOneDriveDesktopclaudesalon-hub`, whose build copy path
-`C:	empsalon-hub-live` is wired into the tunnel), and the Postgres
-database/role plus the seeded `@salonhub.sa` logins — the last of which cannot
-change without a re-seed that destroys the demo payment data.
+should be moved to the new URL rather than left to rely on it.
+
+**The npm package and both folders followed on the same day.** The project lives
+at `C:\Users\Admin\OneDrive\Desktop\claude\book-ly` and its production build copy
+at `C:\temp\book-ly-live`. ⚠️ **The old name now survives in exactly one
+place:** the Postgres database, its role, and the seeded `@salonhub.sa` logins —
+which cannot change without a re-seed that destroys the 42 settled payments every
+revenue figure here rests on. Leave it until there is real data worth keeping.
 
 The M1–M5 core is functionally complete; on top of it sit the 2026-07-27 UI
 session, the 2026-08-04 maps work, photos, customer service and admin revenue
