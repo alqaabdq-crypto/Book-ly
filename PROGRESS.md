@@ -48,7 +48,10 @@ merely mentioned — see the rename entry immediately below.
   found "no production build". Build in a copy outside OneDrive. The Vercel
   deploy already does this.
 
-**Still owed:** deploy this to Vercel; push to GitHub. Step 1 still needs the
+**Deployed 2026-11-03** (`961fc29`): live pages 200, and signed-out `/en/admin`,
+`/en/owner` → `/en/auth/login`, `/ar/account` → `/ar/auth/login`.
+
+**Still owed:** push to GitHub. Step 1 still needs the
 custom domain.
 
 ---
