@@ -1,6 +1,8 @@
 # book-ly — Progress Report
 
-**Last updated:** 2026-09-08
+**Last updated:** 2026-11-03
+
+**🚀 Launch deadline: 2026-12-31.** See the launch plan below.
 
 book-ly is a bilingual (English / Arabic, RTL) salon-booking marketplace for
 Saudi Arabia. Customers discover and book salons; salon owners manage their
@@ -20,7 +22,88 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-09-08, latest):** *"rename the folder case too."*
+**Asked (2026-11-03, latest):** *"in a point what needs to be done and attack
+next, my goal is to lunch the website by the end of this year"* — then *"save
+this and put 31 of December as the deadline date, for the first process how can
+we start"*.
+
+**Answered:** The launch plan below is now the working order, with
+**2026-12-31** as the deadline. Step 1 is deploying to Vercel + Neon. Its
+existing checklist is under "Deployment → To get a durable URL", and the first
+two actions are still the owner's: `vercel login` and creating the Neon
+database. **Update:** the site is now live at
+https://book-ly-peach.vercel.app (see below). **Still owed:** seed, then the
+rest of the plan.
+
+**Step 1 progress (2026-11-03):**
+- Vercel project `book-ly` (account `alqaabdq-crypto`) created from GitHub and
+  linked locally (`.vercel/`, git-ignored). The CLI is installed globally; this
+  machine blocks `.ps1` scripts, so run it as **`vercel.cmd`**.
+- Vercel env (Production): `DATABASE_URL` (Neon, pooled) and `AUTH_SECRET`
+  (generated, sent straight to Vercel). `SEED_ADMIN_PASSWORD` /
+  `SEED_OWNER_PASSWORD` not added yet.
+- Neon database in `eu-central-1` (Frankfurt). **All 10 migrations applied,
+  `btree_gist` included**: the managed-Postgres risk is cleared. The direct
+  (non-pooled) URL for migrations is in `Book-ly/.env.neon` (git-ignored).
+- Gotchas: Vercel will not return a sensitive env value (`env pull` gives
+  empty), so migrations need the URL locally. The Bash sandbox cannot reach
+  Neon on 5432, so run Prisma from PowerShell. `vercel link` appends duplicate
+  `.vercel` and `.env*` lines to `.gitignore`. The second re-ignores
+  `.env.example`, so revert them.
+- **🎉 First real deployment, 2026-11-03: https://book-ly-peach.vercel.app**
+  (commit `203367d`). `/en`, `/ar`, `/en/salons` and `/en/auth/login` all
+  return 200 with title Book-ly, and `/en/salons` reads from Neon, so the
+  production database connection works. Deployed with `vercel.cmd deploy --prod`
+  from a clean `git archive` copy, not the working folder, so local `.env*`
+  files are never uploaded.
+- **Seeded 2026-11-03** with owner-chosen passwords (kept in `.env.neon`, never
+  in chat): 2 plans, 5 categories, 3 demo salons, 10 services, 6 staff, plus the
+  admin `admin@salonhub.sa`. The three salons show on the live `/en/salons`.
+  These are demo salons, to be wiped in plan step 7. The seed prints a harmless
+  pg `sslmode` deprecation warning; `sslmode=verify-full` silences it.
+- **Step 1 left:** custom domain, and the P1 Auth.js config split.
+
+---
+
+## 🚀 Launch plan — deadline 2026-12-31
+
+Set 2026-11-03. Eight weeks. Work top to bottom.
+
+**Weeks 1–2 (by 2026-11-16): Get it running on a real host**
+1. Deploy to Vercel + Neon. Run migrations by hand and confirm the database role
+   can create `btree_gist`.
+2. Buy a domain and point it at Vercel. Retire the tunnel.
+3. Fix the P1: split the Auth.js config so the proxy stops bundling Prisma and
+   bcryptjs.
+
+**Weeks 2–3 (by 2026-11-23): Make payments real**
+4. Run one full booking through Moyasar with test keys (`sk_test_…`).
+5. Apply for a Moyasar **live** account now (commercial registration and bank
+   details). Approval can take weeks, so this is the likeliest launch blocker.
+
+**Weeks 3–5 (by 2026-12-07): Must-haves for launch**
+6. Notifications: booking confirmation and reminder by SMS/WhatsApp to customer
+   and salon. Email is enough for support replies.
+7. Remove demo data: seeded ratings, reviews, revenue, `@salonhub.sa` logins.
+   Re-seed clean, which also allows renaming the database to Book-ly.
+8. Legal pages in Arabic and English: terms, privacy policy (Saudi PDPL), and
+   refund/cancellation policy.
+
+**Weeks 5–7 (by 2026-12-21): Real salons and testing**
+9. Sign up 5–10 real salons, each with a map pin.
+10. Test with real people on phones, in Arabic: booking, payment, cancellation,
+    review.
+11. Set up database backups and error monitoring.
+
+**Week 8 (2026-12-22 → 2026-12-31): Launch**
+12. Fixes only, no new features. Go live.
+
+**After launch:** photo galleries, image thumbnails, moving images out of the
+database.
+
+---
+
+**Asked (2026-09-08):** *"rename the folder case too."*
 
 **Answered:** Both folders now carry the capital:
 `C:\Users\Admin\OneDrive\Desktop\claude\Book-ly` and `C:\temp\Book-ly-live`. The
