@@ -22,18 +22,45 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-11-03, latest):** *"in a point what needs to be done and attack
+**Asked (2026-11-03, latest):** *"change the logo of the website, i want it to
+keep going from scissor to capital B consistently"*, then *"commit and
+publish"*.
+
+**Answered:** The logo mark now loops for ever: the shears hold for ~2.4s,
+spin half a turn and shrink out while a capital **B** spins in, the B holds,
+then it turns back. The B is the wordmark's own serif (`--font-serifmark`,
+Minion Pro / Crimson Pro), so it reads as the "B" of "Book". Committed as
+`8babd7e` and **live** on https://book-ly-peach.vercel.app, verified there.
+
+- **Where:** `src/components/brand-mark.tsx` wraps the shears in `mark-shears`
+  and adds `mark-b`. The loop is the `mark-shears` / `mark-b` keyframes in
+  `globals.css`. The spin sits on the outer groups and the hover snip on the
+  inner `shear-a` / `shear-b`, so the two don't overwrite each other. Hover
+  snip, 3D tilt and glow are unchanged.
+- **Reduced motion:** no loop. The shears stay and the B stays hidden.
+- ⚠️ **Gotcha:** the `animation:` shorthand without a name, followed by
+  `animation-name` in a later rule, came out of the build with **0s
+  duration**, so nothing moved. Fixed by writing the longhands. Keep it that
+  way.
+- **Verified:** typecheck, lint and 81 tests pass. In the browser, the shears
+  show at 20% of the cycle and the B at 70%, locally and on the live site.
+- **Local dev note:** the home page 500s locally with `ECONNREFUSED` when the
+  local Postgres is not running. That is not a code fault; start Postgres first.
+
+**Still owed:** `01e2c30` and `8babd7e` are **not pushed** to GitHub. Step 1
+of the launch plan still needs the custom domain and the P1 Auth.js split.
+
+---
+
+**Asked (2026-11-03):** *"in a point what needs to be done and attack
 next, my goal is to lunch the website by the end of this year"* — then *"save
 this and put 31 of December as the deadline date, for the first process how can
 we start"*.
 
 **Answered:** The launch plan below is now the working order, with
-**2026-12-31** as the deadline. Step 1 is deploying to Vercel + Neon. Its
-existing checklist is under "Deployment → To get a durable URL", and the first
-two actions are still the owner's: `vercel login` and creating the Neon
-database. **Update:** the site is now live at
-https://book-ly-peach.vercel.app (see below). **Still owed:** seed, then the
-rest of the plan.
+**2026-12-31** as the deadline. Step 1 was deploying to Vercel + Neon, and the
+site is now live at https://book-ly-peach.vercel.app, migrated and seeded (see
+below).
 
 **Step 1 progress (2026-11-03):**
 - Vercel project `book-ly` (account `alqaabdq-crypto`) created from GitHub and
@@ -70,7 +97,7 @@ rest of the plan.
 Set 2026-11-03. Eight weeks. Work top to bottom.
 
 **Weeks 1–2 (by 2026-11-16): Get it running on a real host**
-1. Deploy to Vercel + Neon. Run migrations by hand and confirm the database role
+1. ✅ *Done 2026-11-03: https://book-ly-peach.vercel.app.* Deploy to Vercel + Neon. Run migrations by hand and confirm the database role
    can create `btree_gist`.
 2. Buy a domain and point it at Vercel. Retire the tunnel.
 3. Fix the P1: split the Auth.js config so the proxy stops bundling Prisma and
