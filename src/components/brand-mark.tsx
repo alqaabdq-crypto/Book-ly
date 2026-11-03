@@ -19,6 +19,12 @@
 // on the *left*, which is how a real pair of shears is hinged. Grouping them any
 // other way makes the hover animation look like two loose parts sliding, rather
 // than one tool closing. The rotation itself is in globals.css.
+//
+// The mark alternates, on a loop, between the shears and a serif capital B —
+// the same face as "Book" in the wordmark — so the chip carries both halves of
+// the name in turn. Each is wrapped in its own group (`mark-shears`, `mark-b`)
+// so the loop's spin can sit on the outside and the hover snip on the inside
+// without the two transforms overwriting each other. The loop is in globals.css.
 export function BrandMark({ className = "h-6 w-6" }: { className?: string }) {
   return (
     <span
@@ -34,18 +40,35 @@ export function BrandMark({ className = "h-6 w-6" }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Each half: one ring and the blade hinged to it. */}
-        <g className="shear-a">
-          <circle cx="9.5" cy="24" r="3.6" />
-          <path d="M11.8 21.2 L23 6" />
+        <g className="mark-shears">
+          {/* Each half: one ring and the blade hinged to it. */}
+          <g className="shear-a">
+            <circle cx="9.5" cy="24" r="3.6" />
+            <path d="M11.8 21.2 L23 6" />
+          </g>
+          <g className="shear-b">
+            <circle cx="22.5" cy="24" r="3.6" />
+            <path d="M20.2 21.2 L9 6" />
+          </g>
+          {/* The pivot. Filled, not stroked: a 1.3-radius ring would silt up at
+              16px, which is what this mark is asked to survive. */}
+          <circle cx="16" cy="13.6" r="1.4" fill="currentColor" stroke="none" />
         </g>
-        <g className="shear-b">
-          <circle cx="22.5" cy="24" r="3.6" />
-          <path d="M20.2 21.2 L9 6" />
+        <g className="mark-b">
+          <text
+            x="16"
+            y="17"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize="30"
+            fontWeight="700"
+            fill="currentColor"
+            stroke="none"
+            style={{ fontFamily: "var(--font-serifmark)" }}
+          >
+            B
+          </text>
         </g>
-        {/* The pivot. Filled, not stroked: a 1.3-radius ring would silt up at
-            16px, which is what this mark is asked to survive. */}
-        <circle cx="16" cy="13.6" r="1.4" fill="currentColor" stroke="none" />
       </svg>
     </span>
   );
