@@ -57,8 +57,13 @@ connected the repo, and this push built and went live on its own. So anything
 pushed to `main` is public within a minute. Use a branch for unfinished work.
 Git deploys build from GitHub, so no local `.env*` file can be uploaded.
 
-**Still owed:** a real admin sign-in on the live site (owner's password). Step
-1 still needs the custom domain.
+**Live sign-in confirmed 2026-11-03:** the owner signed in as
+`admin@salonhub.sa` on https://book-ly-peach.vercel.app after the split, so the
+full config issues the session and the light proxy config accepts it in
+production.
+
+**Still owed:** step 1 needs only the custom domain. Next is step 4 (Moyasar
+test keys) and step 5 (apply for the Moyasar live account now).
 
 ---
 
