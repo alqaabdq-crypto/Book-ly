@@ -22,7 +22,38 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-11-03, latest):** *"change the logo of the website, i want it to
+**Asked (2026-11-03, latest):** *"go ahead and fix P1"*.
+
+**Answered:** Fixed. The proxy no longer bundles Prisma or bcryptjs.
+
+- **How:** the Auth.js v5 split. `src/server/auth/auth.config.ts` holds
+  `trustHost`, the JWT strategy, `pages` and the `jwt`/`session` callbacks,
+  plus the `next-auth` type augmentation, with only `import type` from Prisma.
+  `config.ts` spreads it and adds the Credentials provider (Prisma, bcryptjs,
+  rate limit). `src/proxy.ts` builds its own `auth` with
+  `NextAuth(authConfig)`. Everything else still imports from `config.ts`.
+  **Rule: nothing with a runtime DB or hash import may go in `auth.config.ts`.**
+- **Measured, before → after:** proxy chunks 625 KB → 443 KB (−29%). Traced
+  files 159 → 93. Prisma/pg/bcrypt files traced 53 → 0. Confirmed in a clean
+  build outside OneDrive.
+- **Verified behaviour** on a local production build, with session JWTs minted
+  using the app's secret: signed-out `/en/admin` → `/en/auth/login`, and
+  `/ar/account` → `/ar/auth/login` (locale kept). CUSTOMER on `/en/admin` →
+  `/en`. ADMIN on `/en/admin` and SALON_OWNER on `/en/owner` pass the proxy.
+  Those pages then 500 only on their own Prisma query, because local Postgres
+  was down. `/en/auth/login` → 200. Typecheck, lint and 81 tests pass.
+- ⚠️ **Do not `next build` inside the OneDrive folder and then `next start`.**
+  OneDrive restored September's `.next` files over the new build and renamed
+  the fresh ones `*-DESKTOP-LKOPRJL` (including `BUILD_ID`), so `next start`
+  found "no production build". Build in a copy outside OneDrive. The Vercel
+  deploy already does this.
+
+**Still owed:** deploy this to Vercel; push to GitHub. Step 1 still needs the
+custom domain.
+
+---
+
+**Asked (2026-11-03):** *"change the logo of the website, i want it to
 keep going from scissor to capital B consistently"*, then *"commit and
 publish"*.
 
@@ -100,8 +131,8 @@ Set 2026-11-03. Eight weeks. Work top to bottom.
 1. ✅ *Done 2026-11-03: https://book-ly-peach.vercel.app.* Deploy to Vercel + Neon. Run migrations by hand and confirm the database role
    can create `btree_gist`.
 2. Buy a domain and point it at Vercel. Retire the tunnel.
-3. Fix the P1: split the Auth.js config so the proxy stops bundling Prisma and
-   bcryptjs.
+3. ✅ *Done 2026-11-03.* Fix the P1: split the Auth.js config so the proxy stops
+   bundling Prisma and bcryptjs.
 
 **Weeks 2–3 (by 2026-11-23): Make payments real**
 4. Run one full booking through Moyasar with test keys (`sk_test_…`).
@@ -2346,10 +2377,11 @@ The milestone table says shipped; this says what "shipped" does not mean.
 
 ### 🟠 P1
 
-- **Prisma and bcryptjs are bundled into the proxy**, which runs on every
-  request, because `src/proxy.ts` imports the full auth config. Auth.js v5's
-  split-config pattern (edge-safe `auth.config.ts` + full `auth.ts`) fixes this.
-  Not fatal — Next 16 proxy runs on the Node runtime — but it is per-request weight.
+- ~~**Prisma and bcryptjs are bundled into the proxy.**~~ **Closed 2026-11-03**
+  with the Auth.js split config: `src/server/auth/auth.config.ts` (no runtime
+  DB or hash imports) feeds the proxy, and `config.ts` adds Credentials on top.
+  The proxy bundle went from 625 KB to 443 KB, with 0 Prisma/pg/bcrypt files
+  traced (was 53). No open P1s remain.
 
 ### 🟡 P2
 

@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
-import { auth } from "@/server/auth/config";
+import { authConfig } from "@/server/auth/auth.config";
 import { routing } from "@/i18n/routing";
 import type { Role } from "@/generated/prisma/client";
+
+// Built from the light config, not imported from config.ts: this runs on every
+// request and only reads the session cookie, so it must not drag in Prisma and
+// bcryptjs with the Credentials provider. Same secret, same JWT callbacks, so it
+// decodes exactly the session config.ts issued. See auth.config.ts.
+const { auth } = NextAuth(authConfig);
 
 const handleI18nRouting = createMiddleware(routing);
 

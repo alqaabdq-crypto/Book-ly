@@ -1,5 +1,4 @@
 import NextAuth from "next-auth";
-import type { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/server/db/prisma";
@@ -8,41 +7,14 @@ import {
   LIMITS,
   resetRateLimit,
 } from "@/server/security/rate-limit";
-import type { Role } from "@/generated/prisma/client";
+import { authConfig } from "@/server/auth/auth.config";
 
-// `JWT` (from @auth/core/jwt) extends Record<string, unknown>, so `id`/`role`
-// on the token are read back via casts below rather than augmenting
-// "next-auth/jwt" — that module re-exports from @auth/core's broader type
-// surface, which fails to resolve unless optional peers (nodemailer,
-// @simplewebauthn/*) are installed.
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      role: Role;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    role: Role;
-  }
-}
-
+// The full auth config: the shared half from auth.config.ts plus the one thing
+// that needs the database — checking a password. Everything except the proxy
+// imports from here; the proxy builds its own `auth` from auth.config.ts alone,
+// so Prisma and bcryptjs stay out of the bundle that runs on every request.
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  // Auth.js derives `trustHost` from AUTH_URL / AUTH_TRUST_HOST / VERCEL /
-  // CF_PAGES / NODE_ENV !== "production" — it never reads NEXTAUTH_URL. Without
-  // this, every auth request in a production build throws UntrustedHost; `next
-  // dev` hides it because NODE_ENV isn't "production" there. Set explicitly so
-  // the app behaves the same self-hosted as it does on Vercel.
-  //
-  // Deliberately paired with *not* setting AUTH_URL/NEXTAUTH_URL: those route
-  // requests through Auth.js's reqWithEnvURL, which rebases req.url onto the env
-  // origin and would send next-intl's locale redirects to the wrong host.
-  trustHost: true,
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/auth/login",
-  },
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -90,18 +62,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    jwt: ({ token, user }) => {
-      if (user) {
-        token.id = user.id as string;
-        token.role = user.role;
-      }
-      return token;
-    },
-    session: ({ session, token }) => {
-      session.user.id = token.id as string;
-      session.user.role = token.role as Role;
-      return session;
-    },
-  },
 });
