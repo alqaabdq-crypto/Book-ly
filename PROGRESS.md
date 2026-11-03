@@ -4,6 +4,9 @@
 
 **🚀 Launch deadline: 2026-12-31.** See the launch plan below.
 
+**Live:** https://book-ly-peach.vercel.app · **⏸ Paused** until the owner buys a
+domain. Start at "Pick up here" below.
+
 book-ly is a bilingual (English / Arabic, RTL) salon-booking marketplace for
 Saudi Arabia. Customers discover and book salons; salon owners manage their
 listing, staff and schedule; admins verify salons before they go live.
@@ -22,7 +25,71 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-11-03, latest):** *"go ahead and fix P1"*.
+**Asked (2026-11-03, latest):** *"update the progress report with everything
+until i buy the domain and come back"*.
+
+**Answered:** This handoff. Work is **paused until the owner has bought a
+domain**. Everything below it in this section is the day's detail.
+
+### ⏸ Pick up here (state as of 2026-11-03, end of day)
+
+**Where things stand**
+- **Live:** https://book-ly-peach.vercel.app, on Vercel project `book-ly`
+  (account `alqaabdq-crypto`) with Neon Postgres in `eu-central-1` (Frankfurt).
+  All 10 migrations are applied and the database is seeded: admin, 2 plans,
+  5 categories and 3 **demo** salons. The owner has signed in as admin there.
+- **Code:** local `master` = GitHub `main` = what is live, at `6481497` or
+  later. Nothing is uncommitted. The looping shears→B logo (`8babd7e`) and the
+  P1 auth split (`961fc29`) are both live.
+- **Launch plan (deadline 2026-12-31):** step 1 is done except the domain
+  (1 ✅, 2 ⬜ domain, 3 ✅). Steps 4–12 have not started. No open P1s.
+
+**What the owner is doing before coming back**
+1. **Buying a domain**, e.g. `bookly.sa` or `book-ly.com`. A `.sa` domain
+   needs Saudi registration documents. Any registrar works.
+2. **Applying for the Moyasar live account** (commercial registration and bank
+   details). This is the slowest item in the plan, so it should run in
+   parallel.
+3. Optional, to unblock step 4: getting Moyasar **test** keys and adding them
+   in Vercel → Settings → Environment Variables as `MOYASAR_SECRET_KEY` and
+   `MOYASAR_WEBHOOK_SECRET` (Production).
+
+**First thing to do when the owner is back with a domain**
+1. Vercel → `book-ly` → Settings → Domains → add the domain. Or run
+   `vercel.cmd domains add <domain> book-ly` from the `Book-ly` folder.
+2. Give the owner the DNS records Vercel shows: an `A` record for the apex
+   and a `CNAME` for `www`. They set these at their registrar. Wait for
+   Vercel to show "Valid Configuration" and issue the certificate.
+3. **Do not set `AUTH_URL` / `NEXTAUTH_URL`** for the new domain;
+   `trustHost: true` already covers it (see the AGENTS.md rule). Check that
+   login redirects stay on the new host, for `/en` and `/ar`.
+4. When steps 4–5 go live, update the Moyasar callback/webhook URLs to the new
+   domain.
+5. Mark launch-plan step 2 ✅, then move to step 4 (Moyasar test booking).
+
+**How to work on this machine (learned the hard way, 2026-11-03)**
+- PowerShell blocks `.ps1` scripts. Run **`vercel.cmd`** and **`npx.cmd`**,
+  not `vercel` and `npx`. Don't change the execution policy.
+- **Deploying = pushing to GitHub `main`.** It auto-deploys to production in
+  about 40s, so put unfinished work on a branch. A manual
+  `vercel.cmd deploy --prod` must run from a clean `git archive` copy, never
+  from the working folder, so no `.env*` is uploaded.
+- **Never build-and-start inside OneDrive.** OneDrive restores old `.next`
+  files and renames new ones. Build in a copy outside OneDrive (e.g. the
+  scratchpad).
+- **Database work against Neon:** the direct (non-pooled) URL and the two
+  seed passwords are in `Book-ly/.env.neon` (git-ignored, written by the
+  owner). Load it into the PowerShell environment and run Prisma from
+  PowerShell. The Bash sandbox can't reach Neon on port 5432. Never print the
+  file. Vercel will not return sensitive env values.
+- **Local dev needs local Postgres running.** Otherwise pages that query the
+  database 500 with `ECONNREFUSED`. The login page works without it.
+- `.claude/launch.json` in the parent folder has a `book-ly-dev` preview
+  entry (port 3200).
+
+---
+
+**Asked (2026-11-03):** *"go ahead and fix P1"*.
 
 **Answered:** Fixed. The proxy no longer bundles Prisma or bcryptjs.
 
