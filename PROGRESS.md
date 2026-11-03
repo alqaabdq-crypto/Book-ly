@@ -51,8 +51,14 @@ merely mentioned — see the rename entry immediately below.
 **Deployed 2026-11-03** (`961fc29`): live pages 200, and signed-out `/en/admin`,
 `/en/owner` → `/en/auth/login`, `/ar/account` → `/ar/auth/login`.
 
-**Still owed:** push to GitHub. Step 1 still needs the
-custom domain.
+**Pushed 2026-11-03:** local `master` → GitHub `main` (`203367d..a0956d6`).
+⚠️ **A push to `main` now auto-deploys to Vercel production.** The import
+connected the repo, and this push built and went live on its own. So anything
+pushed to `main` is public within a minute. Use a branch for unfinished work.
+Git deploys build from GitHub, so no local `.env*` file can be uploaded.
+
+**Still owed:** a real admin sign-in on the live site (owner's password). Step
+1 still needs the custom domain.
 
 ---
 
