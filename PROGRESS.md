@@ -28,9 +28,19 @@ merely mentioned — see the rename entry immediately below.
 **Asked (2026-11-08, latest):** *"Link Book-ly to Salla"*, then *"Build it
 now"*. The owner chose to build it before launch, against the advice to wait.
 
-**Answered:** A Book-ly app for the **Salla App Store**, on branch
-`feature/salla-app`. It is **not merged, pushed or deployed**, and its
-migration is not applied to Neon.
+**Answered:** A Book-ly app for the **Salla App Store**. **Live since
+2026-11-08** (`a87af12` + `3bda9c3` on `main`), with the `20261108200000_salla_app`
+migration applied to Neon (11/11).
+- **Salla side:** the owner set up the Salla Partners app (id 961921163,
+  Public, Manage Store, Easy mode, scopes Basic info + Products read). It has
+  the webhook, the embedded page (`/ar/salla/app`) and the App Snippet.
+- **Vercel:** the five `SALLA_*` variables are set.
+- **Checked live:**
+  - a forged webhook gets 401;
+  - booking-link answers 404 for an unknown store;
+  - a bad ticket redirects with `error=ticket`;
+  - the owner page requires sign-in;
+  - the embedded page renders with `frame-ancestors` limited to Salla.
 - **Install:** Salla's Easy-mode OAuth posts tokens to
   `/api/salla/webhook`. Delivery is HMAC-verified and the tokens are stored
   AES-GCM encrypted in the new `SallaStore` model.
@@ -45,10 +55,10 @@ migration is not applied to Neon.
 - **Setup and unverified points:** `docs/salla/SETUP.md`.
 
 **Still owed:**
-- The owner creates the Salla Partners app and sets five `SALLA_*` variables
-  in Vercel.
-- The branch is tested on a Salla demo store.
-- Merge, deploy and run `prisma migrate deploy` on Neon, with approval.
+- An end-to-end test on a Salla demo store: create the store, install, open
+  the embedded page, link, import, and check the storefront button.
+- The unverified points in `docs/salla/SETUP.md` get settled during that test.
+- Submit the app for Salla's review only after the rename and domain.
 
 **Asked (2026-11-03):** *"update the progress report with everything
 until i buy the domain and come back"*.
