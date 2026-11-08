@@ -9,13 +9,15 @@ import { decryptToken, encryptToken } from "@/server/salla/crypto";
  *   14 days, refresh tokens a month, and **refresh tokens are single-use**: a
  *   reused one revokes every token issued from it and the merchant must
  *   reinstall. Hence the row lock in `accessTokenFor`.
- * - Embedded-app introspection: POST `/exchange-authority/v1/introspect` with
- *   the short-lived token Salla puts in our app page's URL and our app id in
- *   `s-source`; it answers with the verified `merchant_id`.
+ * - Embedded-app introspection: POST https://api.salla.dev/exchange-authority/v1/introspect
+ *   (no `/admin/v2`; the address @salla.sa/embedded-sdk itself calls) with the
+ *   short-lived `?token=` Salla puts on our app page's URL and our app id in
+ *   `S-Source`; it answers with the verified `merchant_id`.
  */
 
 const API = "https://api.salla.dev/admin/v2";
 const TOKEN_URL = "https://accounts.salla.sa/oauth2/token";
+const INTROSPECT_URL = "https://api.salla.dev/exchange-authority/v1/introspect";
 
 /** Refresh when less than this is left, so a request never starts on a dying token. */
 const REFRESH_MARGIN_MS = 24 * 60 * 60 * 1000;
@@ -49,9 +51,9 @@ export async function introspectEmbeddedToken(token: string): Promise<string | n
   const appId = process.env.SALLA_APP_ID;
   if (!appId || !token) return null;
 
-  const res = await fetch(`${API}/exchange-authority/v1/introspect`, {
+  const res = await fetch(INTROSPECT_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json", "s-source": appId },
+    headers: { "Content-Type": "application/json", Accept: "application/json", "S-Source": appId },
     body: JSON.stringify({ token }),
     cache: "no-store",
   });

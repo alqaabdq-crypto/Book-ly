@@ -446,6 +446,7 @@
     "embedStep3": "Confirm the link. The \"Book now\" button appears once your salon is approved.",
     "embedLink": "Link my Book-ly salon",
     "embedLinkedTo": "Linked to {salon} on Book-ly.",
-    "embedManage": "Manage on Book-ly"
+    "embedManage": "Manage on Book-ly",
+    "embedChecking": "Checking your Salla store…"
   }
 }

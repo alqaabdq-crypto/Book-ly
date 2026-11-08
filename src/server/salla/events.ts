@@ -24,10 +24,13 @@ export type SallaEvent = {
 
 export type EventOutcome = "applied" | "stale" | "ignored";
 
-/** "2022-12-31 12:31:25" has no zone; read every one the same way so they order. */
+/**
+ * "2022-12-31 12:31:25" carries no zone. It is Saudi time: the first live
+ * install's created_at was 3 hours ahead of the UTC expiry Salla sent with it.
+ */
 export function eventTime(createdAt: string | undefined): Date {
   if (!createdAt) return new Date();
-  const d = new Date(createdAt.includes("T") ? createdAt : `${createdAt.replace(" ", "T")}Z`);
+  const d = new Date(/[TZ+]/.test(createdAt) ? createdAt : `${createdAt.replace(" ", "T")}+03:00`);
   return Number.isNaN(d.getTime()) ? new Date() : d;
 }
 
