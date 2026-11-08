@@ -144,6 +144,7 @@ model Salon {
   photos       SalonPhoto[]
   payouts      Payout[]
   subscription Subscription?
+  sallaStore   SallaStore?
 
   @@index([ownerId])
   @@index([status, city])
@@ -215,9 +216,14 @@ model Service {
   price           Decimal  @db.Decimal(10, 2)
   isActive        Boolean  @default(true)
 
+  // Set only on services imported from a linked Salla store: the Salla product
+  // id, so a second import skips what is already here instead of duplicating it.
+  sallaProductId  String?
+
   staffServices StaffService[]
   bookingItems  BookingItem[]
 
+  @@unique([salonId, sallaProductId])
   @@index([salonId])
 }
 
@@ -525,4 +531,44 @@ model Favorite {
   salon      Salon  @relation(fields: [salonId], references: [id])
 
   @@unique([customerId, salonId])
+}
+
+/// A Salla store that installed the Book-ly app (Salla App Store).
+///
+/// Salla's "Easy mode" OAuth is the only mode allowed for published apps: Salla
+/// exchanges the code itself and posts the tokens to our webhook
+/// (`app.store.authorize`), so a row exists as soon as a merchant installs,
+/// before anyone on our side knows which salon it belongs to. `salonId` is set
+/// only by the link step, which needs both a Salla-verified merchant (the
+/// embedded app page's introspected token) and a signed-in Book-ly owner.
+///
+/// Tokens are stored AES-256-GCM encrypted with SALLA_TOKEN_KEY; a database dump
+/// alone does not hand out API access to merchants' stores.
+model SallaStore {
+  id         String @id @default(cuid())
+  /// Salla's store id (the webhook's `merchant`), kept as text.
+  merchantId String @unique
+
+  salonId String? @unique
+  salon   Salon?  @relation(fields: [salonId], references: [id], onDelete: SetNull)
+
+  name   String?
+  domain String?
+
+  accessTokenEnc  String?
+  refreshTokenEnc String?
+  tokenExpiresAt  DateTime?
+  scope           String?
+
+  /// `created_at` of the newest Salla event applied. Salla retries failed
+  /// deliveries for ~15 minutes, so an older event (a retried authorize after
+  /// an uninstall) must not undo a newer one.
+  lastEventAt DateTime?
+
+  installedAt   DateTime?
+  uninstalledAt DateTime?
+  linkedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

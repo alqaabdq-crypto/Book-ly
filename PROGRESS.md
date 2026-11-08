@@ -25,7 +25,32 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-11-03, latest):** *"update the progress report with everything
+**Asked (2026-11-08, latest):** *"Link Book-ly to Salla"*, then *"Build it
+now"*. The owner chose to build it before launch, against the advice to wait.
+
+**Answered:** A Book-ly app for the **Salla App Store**, on branch
+`feature/salla-app`. It is **not merged, pushed or deployed**, and its
+migration is not applied to Neon.
+- **Install:** Salla's Easy-mode OAuth posts tokens to
+  `/api/salla/webhook`. Delivery is HMAC-verified and the tokens are stored
+  AES-GCM encrypted in the new `SallaStore` model.
+- **Link:** the merchant opens the app inside Salla (`/{locale}/salla/app`),
+  where Salla's token-introspect proves the store, then confirms while signed
+  in to Book-ly at `/{locale}/owner/salla`. Both proofs are required.
+- **Owner page:** imports Salla service and booking products as hidden
+  services.
+- **Storefront button:** an App Snippet (`docs/salla/app-snippet.js`) shows
+  "احجز موعدك" once the salon is approved.
+- **Tests:** 20 new; the suite is 102/102.
+- **Setup and unverified points:** `docs/salla/SETUP.md`.
+
+**Still owed:**
+- The owner creates the Salla Partners app and sets five `SALLA_*` variables
+  in Vercel.
+- The branch is tested on a Salla demo store.
+- Merge, deploy and run `prisma migrate deploy` on Neon, with approval.
+
+**Asked (2026-11-03):** *"update the progress report with everything
 until i buy the domain and come back"*.
 
 **Answered:** This handoff. Work is **paused until the owner has bought a

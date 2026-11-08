@@ -205,7 +205,8 @@
     "cover": "Cover photo",
     "coverNone": "No cover photo yet",
     "coverHelp": "Shown at the top of your salon page and on the salon cards customers browse. A wide photo works best. Leave empty to keep the current one.",
-    "removeCover": "Remove the current cover photo"
+    "removeCover": "Remove the current cover photo",
+    "navSalla": "Salla"
   },
   "Admin": {
     "title": "Admin",
@@ -404,5 +405,47 @@
     "alsoResolve": "Mark resolved too",
     "markResolved": "Mark resolved",
     "reopen": "Reopen"
+  },
+  "Salla": {
+    "title": "Salla store",
+    "intro": "Link your Salla store to show a \"Book now\" button on it and bring your service products into Book-ly.",
+    "howTitle": "How to link",
+    "how1": "In your Salla dashboard, install the Book-ly app from the Salla App Store.",
+    "how2": "Open Book-ly from your installed apps in Salla and choose \"Link my Book-ly salon\".",
+    "how3": "Sign in here with your salon owner account and confirm.",
+    "confirmTitle": "Link this Salla store?",
+    "confirmBody": "Salla store \"{store}\" will be linked to your salon \"{salon}\".",
+    "confirmLink": "Link store",
+    "statusLinked": "Linked",
+    "statusUninstalled": "App removed from Salla",
+    "buttonLive": "Your store shows a \"Book now\" button that opens your booking page.",
+    "buttonWaiting": "The \"Book now\" button appears on your store once your salon is approved.",
+    "importTitle": "Import services from Salla",
+    "importBody": "Copies your Salla service and booking products into your services list, hidden, with a 30-minute duration. Check each one's duration and English name, then switch it on. Products already imported are skipped.",
+    "importCategory": "Category",
+    "importRun": "Import services",
+    "unlink": "Unlink Salla store",
+    "savedLinked": "Your Salla store is linked.",
+    "savedUnlinked": "Your Salla store is unlinked. The app stays installed on Salla until you remove it there.",
+    "savedImported": "Imported {count} services ({skipped} already here). They are hidden until you switch them on in Services.",
+    "error": {
+      "ticket": "That link has expired. Open Book-ly from your Salla dashboard again and choose \"Link my Book-ly salon\".",
+      "not-installed": "Book-ly is not installed on that Salla store any more. Install it again from the Salla App Store.",
+      "taken": "That Salla store is already linked to another salon.",
+      "salon-has-store": "Your salon is already linked to a different Salla store. Unlink it first.",
+      "category": "Choose a category for the imported services.",
+      "not-linked": "Link a Salla store first.",
+      "salla": "Salla did not answer. Try again in a minute."
+    },
+    "embedTitle": "Book-ly for your salon",
+    "embedIntro": "Let your customers book appointments from your Salla store: a \"Book now\" button opens your salon's page on Book-ly.",
+    "embedOpenFromSalla": "Open this page from the Book-ly app in your Salla dashboard.",
+    "embedWaiting": "Salla is still finishing the installation. Refresh this page in a moment.",
+    "embedStep1": "Choose \"Link my Book-ly salon\". Book-ly opens in a new tab.",
+    "embedStep2": "Sign in to Book-ly as a salon owner, or create your salon.",
+    "embedStep3": "Confirm the link. The \"Book now\" button appears once your salon is approved.",
+    "embedLink": "Link my Book-ly salon",
+    "embedLinkedTo": "Linked to {salon} on Book-ly.",
+    "embedManage": "Manage on Book-ly"
   }
 }

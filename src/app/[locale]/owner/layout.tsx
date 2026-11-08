@@ -34,6 +34,7 @@ export default async function OwnerLayout({ children, params }: Props) {
             { href: "/owner/services", label: t("navServices") },
             { href: "/owner/staff", label: t("navStaff") },
             { href: "/owner/profile", label: t("navProfile") },
+            { href: "/owner/salla", label: t("navSalla") },
           ]}
         />
       </div>
