@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { localized } from "@/i18n/content";
 import { NeedsSalon } from "@/components/needs-salon";
 import { auth } from "@/server/auth/config";
@@ -83,9 +84,9 @@ export default async function OwnerServicesPage({ params, searchParams }: Props)
                   <input type="hidden" name="locale" value={locale} />
                   <input type="hidden" name="id" value={service.id} />
                   <input type="hidden" name="active" value={service.isActive ? "false" : "true"} />
-                  <button type="submit" className="text-sm underline">
+                  <SubmitButton className="text-sm underline">
                     {service.isActive ? t("retire") : t("restore")}
-                  </button>
+                  </SubmitButton>
                 </form>
               </div>
             </li>
@@ -153,9 +154,9 @@ export default async function OwnerServicesPage({ params, searchParams }: Props)
         </div>
 
         <div>
-          <button type="submit" className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background">
+          <SubmitButton className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background">
             {editing ? t("save") : t("addService")}
-          </button>
+          </SubmitButton>
           {editing && (
             <a href="?" className="ms-4 text-sm underline">
               {t("cancelEdit")}

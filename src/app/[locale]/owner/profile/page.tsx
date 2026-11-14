@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { auth } from "@/server/auth/config";
 import { getOwnedSalon } from "@/server/salon/owner";
 import { saveSalon } from "@/server/salon/actions";
@@ -152,12 +153,11 @@ export default async function OwnerProfilePage({ params, searchParams }: Props) 
         <LocationPicker lat={salon?.lat ?? null} lng={salon?.lng ?? null} />
 
         <div>
-          <button
-            type="submit"
+          <SubmitButton
             className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background"
           >
             {salon ? t("save") : t("createSalon")}
-          </button>
+          </SubmitButton>
         </div>
       </form>
 

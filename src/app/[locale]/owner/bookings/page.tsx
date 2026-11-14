@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { localized } from "@/i18n/content";
 import { NeedsSalon } from "@/components/needs-salon";
 import { auth } from "@/server/auth/config";
@@ -138,12 +139,11 @@ export default async function OwnerBookingsPage({ params, searchParams }: Props)
                       <input type="hidden" name="locale" value={locale} />
                       <input type="hidden" name="bookingId" value={booking.id} />
                       <input type="hidden" name="status" value={status} />
-                      <button
-                        type="submit"
+                      <SubmitButton
                         className="rounded-full border border-gray-300 px-3 py-1.5 text-sm hover:border-gray-500 dark:border-gray-700 dark:hover:border-gray-400"
                       >
                         {t(`action${status}` as "actionCONFIRMED")}
-                      </button>
+                      </SubmitButton>
                     </form>
                   ))}
                 </div>

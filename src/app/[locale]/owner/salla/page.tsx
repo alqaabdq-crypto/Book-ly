@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localized } from "@/i18n/content";
 import { NeedsSalon } from "@/components/needs-salon";
@@ -77,7 +78,7 @@ export default async function OwnerSallaPage({ params, searchParams }: Props) {
           </p>
           <form action={linkSallaStore} className="mt-4">
             <input type="hidden" name="locale" value={locale} />
-            <button type="submit" className={button}>{t("confirmLink")}</button>
+            <SubmitButton className={button}>{t("confirmLink")}</SubmitButton>
           </form>
         </section>
       )}
@@ -116,13 +117,13 @@ export default async function OwnerSallaPage({ params, searchParams }: Props) {
                   ))}
                 </select>
               </label>
-              <button type="submit" className={button}>{t("importRun")}</button>
+              <SubmitButton className={button}>{t("importRun")}</SubmitButton>
             </form>
           </section>
 
           <form action={unlinkSallaStore}>
             <input type="hidden" name="locale" value={locale} />
-            <button type="submit" className={quiet}>{t("unlink")}</button>
+            <SubmitButton className={quiet}>{t("unlink")}</SubmitButton>
           </form>
         </>
       ) : (

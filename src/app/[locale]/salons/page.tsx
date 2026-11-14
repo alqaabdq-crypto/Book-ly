@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
 import { localized } from "@/i18n/content";
 import { prisma } from "@/server/db/prisma";
@@ -233,12 +234,11 @@ export default async function SalonsPage({ params, searchParams }: Props) {
           </>
         )}
 
-        <button
-          type="submit"
+        <SubmitButton
           className="btn-brand rounded-full px-5 py-2.5 font-medium"
         >
           {t("apply")}
-        </button>
+        </SubmitButton>
 
         {hasFilters && (
           <Link

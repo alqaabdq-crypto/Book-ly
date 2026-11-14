@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/server/db/prisma";
 import { replyToTicket, setTicketStatus } from "@/server/support/actions";
@@ -175,9 +176,9 @@ export default async function AdminSupportPage({ params, searchParams }: Props) 
                   </label>
 
                   <div className="flex flex-wrap items-center gap-4">
-                    <button type="submit" className="btn-brand rounded-full px-5 py-2 text-sm font-medium">
+                    <SubmitButton className="btn-brand rounded-full px-5 py-2 text-sm font-medium">
                       {t("sendReply")}
-                    </button>
+                    </SubmitButton>
                     <label className="flex items-center gap-2 text-sm text-muted">
                       <input type="checkbox" name="resolve" />
                       {t("alsoResolve")}
@@ -196,9 +197,9 @@ export default async function AdminSupportPage({ params, searchParams }: Props) 
                   name="status"
                   value={ticket.status === "RESOLVED" ? "OPEN" : "RESOLVED"}
                 />
-                <button type="submit" className="text-sm text-muted underline hover:text-brand">
+                <SubmitButton className="text-sm text-muted underline hover:text-brand">
                   {ticket.status === "RESOLVED" ? t("reopen") : t("markResolved")}
-                </button>
+                </SubmitButton>
               </form>
             </li>
           ))}

@@ -101,6 +101,90 @@ body {
   transform: translateY(0);
 }
 
+/* ---------------------------------------------------------------------------
+   Every button says it is a button.
+
+   Tailwind v4's preflight leaves buttons on the arrow cursor, and most of the
+   site's buttons (the white "bg-foreground" pills, the outline pills, the
+   underlined row actions) had no hover state at all, so a pointer gave no sign
+   anything was clickable. These rules are unlayered on purpose: they sit above
+   Tailwind's utility layer, so one place covers every pill on the site,
+   including ones added later, without a class to remember.
+--------------------------------------------------------------------------- */
+
+button:not(:disabled),
+[role="button"],
+select,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+/* Pills (buttons and button-links): lift, grow a little and glow. */
+:is(button, a).rounded-full {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    filter 0.15s ease;
+}
+:is(button, a).rounded-full:not(:disabled):hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 26px -10px color-mix(in oklab, var(--color-brand) 70%, transparent);
+}
+:is(button, a).rounded-full:not(:disabled):active {
+  transform: translateY(0) scale(0.97);
+}
+/* The white primary pill warms to the brand's pale accent. */
+:is(button, a).rounded-full.bg-foreground:not(:disabled):hover {
+  background-color: var(--color-accent);
+}
+/* Outline pills pick up the brand edge. */
+:is(button, a).rounded-full.border:not(.bg-foreground):not(.btn-brand):not(:disabled):hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+/* Underlined text actions (Edit, Retire, Restore, Cancel…). */
+:is(button, a).underline {
+  transition: color 0.15s ease;
+}
+:is(button, a).underline:not(:disabled):hover {
+  color: var(--color-brand);
+}
+
+/* While a form's server action runs (SubmitButton sets data-pending on the
+   button that was pressed, and disables its siblings): a spinner next to the
+   label, so a slow save reads as "working" rather than "nothing happened". */
+button:disabled {
+  cursor: progress;
+}
+button[data-pending]::after {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-inline-start: 0.5em;
+  vertical-align: -0.12em;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: 9999px;
+  animation: btn-spin 0.7s linear infinite;
+}
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(button, a).rounded-full:not(:disabled):hover,
+  :is(button, a).rounded-full:not(:disabled):active {
+    transform: none;
+  }
+  button[data-pending]::after {
+    animation-duration: 2s;
+  }
+}
+
 /* Surface card with a colored edge that warms on hover. */
 .card-surface {
   background-color: color-mix(in oklab, var(--surface) 90%, transparent);

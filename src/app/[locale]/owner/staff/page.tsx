@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { localized } from "@/i18n/content";
 import { NeedsSalon } from "@/components/needs-salon";
 import { StaffAvatar } from "@/components/staff-avatar";
@@ -98,9 +99,9 @@ export default async function OwnerStaffPage({ params, searchParams }: Props) {
                   <input type="hidden" name="locale" value={locale} />
                   <input type="hidden" name="id" value={member.id} />
                   <input type="hidden" name="active" value={member.isActive ? "false" : "true"} />
-                  <button type="submit" className="text-sm underline">
+                  <SubmitButton className="text-sm underline">
                     {member.isActive ? t("deactivate") : t("restore")}
-                  </button>
+                  </SubmitButton>
                 </form>
               </div>
             </li>
@@ -233,9 +234,9 @@ export default async function OwnerStaffPage({ params, searchParams }: Props) {
         </fieldset>
 
         <div>
-          <button type="submit" className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background">
+          <SubmitButton className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background">
             {editing ? t("save") : t("addStaff")}
-          </button>
+          </SubmitButton>
           {editing && (
             <a href="?" className="ms-4 text-sm underline">
               {t("cancelEdit")}

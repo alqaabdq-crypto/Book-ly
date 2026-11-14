@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
 import { auth } from "@/server/auth/config";
 import { prisma } from "@/server/db/prisma";
@@ -131,9 +132,9 @@ export async function SiteReviews({
             />
           </div>
 
-          <button type="submit" className="btn-brand rounded-full px-6 py-3">
+          <SubmitButton className="btn-brand rounded-full px-6 py-3">
             {t("submit")}
-          </button>
+          </SubmitButton>
         </form>
         )}
 

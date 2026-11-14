@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { auth } from "@/server/auth/config";
 import { prisma } from "@/server/db/prisma";
 import { createSupportTicket } from "@/server/support/actions";
@@ -149,9 +150,9 @@ export default async function HelpPage({ params, searchParams }: Props) {
         </label>
 
         <div>
-          <button type="submit" className="btn-brand rounded-full px-6 py-2.5 font-medium">
+          <SubmitButton className="btn-brand rounded-full px-6 py-2.5 font-medium">
             {t("submit")}
-          </button>
+          </SubmitButton>
         </div>
 
         {!session?.user && <p className="text-sm text-muted">{t("guestNote")}</p>}

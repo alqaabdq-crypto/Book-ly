@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { localized } from "@/i18n/content";
@@ -168,12 +169,11 @@ export default async function BookPage({ params, searchParams }: Props) {
             />
           </div>
 
-          <button
-            type="submit"
+          <SubmitButton
             className="rounded-full bg-foreground px-5 py-2.5 font-medium text-background"
           >
             {t("showTimes")}
-          </button>
+          </SubmitButton>
         </div>
       </form>
 
@@ -225,15 +225,14 @@ export default async function BookPage({ params, searchParams }: Props) {
                         value={service.id}
                       />
                     ))}
-                    <button
-                      type="submit"
+                    <SubmitButton
                       className="rounded-full border border-gray-300 px-4 py-2 text-sm hover:border-gray-500 dark:border-gray-700 dark:hover:border-gray-400"
                     >
                       {format.dateTime(riyadhMinutesToInstant(date, slot.start), {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
-                    </button>
+                    </SubmitButton>
                   </form>
                 </li>
               ))}

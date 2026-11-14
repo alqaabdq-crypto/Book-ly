@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
 import { localized } from "@/i18n/content";
 import { LogoutButton } from "@/components/logout-button";
@@ -138,12 +139,11 @@ export default async function AccountPage({ params, searchParams }: Props) {
               <form action={startPayment}>
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="bookingId" value={booking.id} />
-                <button
-                  type="submit"
+                <SubmitButton
                   className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
                 >
                   {t("payNow")}
-                </button>
+                </SubmitButton>
               </form>
             )}
 
@@ -151,9 +151,9 @@ export default async function AccountPage({ params, searchParams }: Props) {
               <form action={cancelBooking}>
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="bookingId" value={booking.id} />
-                <button type="submit" className="text-sm underline">
+                <SubmitButton className="text-sm underline">
                   {t("cancel")}
-                </button>
+                </SubmitButton>
               </form>
             )}
           </div>
@@ -219,9 +219,9 @@ export default async function AccountPage({ params, searchParams }: Props) {
               />
             </div>
 
-            <button type="submit" className="btn-brand w-fit rounded-full px-5 py-2 text-sm">
+            <SubmitButton className="btn-brand w-fit rounded-full px-5 py-2 text-sm">
               {t("reviewSubmit")}
-            </button>
+            </SubmitButton>
           </form>
         )}
       </li>

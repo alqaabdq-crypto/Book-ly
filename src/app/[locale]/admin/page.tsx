@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Link } from "@/i18n/navigation";
 import { localized } from "@/i18n/content";
 import { prisma } from "@/server/db/prisma";
@@ -95,12 +96,11 @@ export default async function AdminPage({ params, searchParams }: Props) {
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="salonId" value={salon.id} />
                 <input type="hidden" name="status" value={status} />
-                <button
-                  type="submit"
+                <SubmitButton
                   className="rounded-full border border-gray-300 px-3 py-1.5 text-sm hover:border-gray-500 dark:border-gray-700 dark:hover:border-gray-400"
                 >
                   {t(`action${status}` as "actionAPPROVED")}
-                </button>
+                </SubmitButton>
               </form>
             ))}
           </div>
