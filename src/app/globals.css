@@ -340,60 +340,20 @@ button[data-pending]::after {
    every page of the site.
 
    What happens: the shears close (the two halves rotate toward each other about
-   the pivot), the chip lifts and tilts a few degrees into the cut, the brand
-   gradient sweeps left-to-right across the name, and the "-ly" kicks up. On
-   press the chip snaps down, so a click feels like the snip landing.
+   the pivot), the chip grows a little and glows, the brand gradient sweeps
+   left-to-right across the name, and its last letter kicks up. On press the
+   chip snaps down, so a click feels like the snip landing. It is flat on
+   purpose: the pointer-tracking 3D tilt was removed on 2026-11-14.
 
    Focus is treated exactly like hover rather than getting a separate treatment:
    a keyboard user should see the same thing a pointer user sees, and the focus
    ring is added on top rather than replacing it.
 --------------------------------------------------------------------------- */
-/* The chip is the 3D object. --rx/--ry are written by LogoLockup on pointer
-   move and removed on leave; with no JS, or before the first move, they resolve
-   to 0 and this is a flat chip that still snips and glows on hover.
-
-   perspective() inside the transform rather than a perspective property on the
-   parent: the parent is an inline flex row in a sticky header, and giving that
-   a perspective would make every descendant share one vanishing point — the
-   name would swing with the chip. Scoping it here keeps the tilt on the chip. */
 .logo-chip {
-  transform-style: preserve-3d;
-  transform: perspective(420px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
-    scale(var(--chip-scale, 1));
-  /* Fast enough to feel attached to the cursor while tracking, slow enough that
-     letting go reads as a settle rather than a snap. */
+  transform: scale(var(--chip-scale, 1));
   transition:
     transform 160ms ease-out,
     box-shadow 280ms ease;
-}
-
-/* The shears sit above the chip's face, so the tilt parallaxes them against it —
-   this is what makes the chip read as an object with depth rather than a
-   picture of one. */
-.logo-chip svg {
-  transform: translateZ(14px);
-}
-
-/* Specular highlight, tracking the pointer. Painted on its own layer above the
-   gradient and below the shears, and clipped by the chip's own radius. */
-.logo-chip::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    circle at var(--gx, 50%) var(--gy, 50%),
-    rgba(255, 255, 255, 0.55),
-    rgba(255, 255, 255, 0) 60%
-  );
-  opacity: 0;
-  transition: opacity 200ms ease;
-  transform: translateZ(6px);
-  pointer-events: none;
-}
-
-.logo-lockup:hover .logo-chip::after {
-  opacity: 1;
 }
 
 .logo-lockup:hover .logo-chip,
@@ -405,14 +365,8 @@ button[data-pending]::after {
   --chip-scale: 0.94;
 }
 
-/* The name takes a fraction of the chip's rotation. At full strength the two
-   elements swing apart and the lockup stops reading as one piece. */
 .logo-word {
-  transform: perspective(700px) rotateY(calc(var(--ry, 0deg) * 0.35))
-    rotateX(calc(var(--rx, 0deg) * 0.2));
-  transition:
-    background-position 620ms ease,
-    transform 160ms ease-out;
+  transition: background-position 620ms ease;
 }
 
 .logo-lockup .shear-a,
@@ -562,20 +516,5 @@ button[data-pending]::after {
   .logo-lockup:hover .logo-word,
   .logo-lockup:focus-visible .logo-word {
     background-position: 0% 50%;
-  }
-
-  /* The pointer tilt goes too: LogoLockup keeps writing --rx/--ry, and these
-     rules are what make those values inert. */
-  .logo-chip,
-  .logo-word {
-    transform: none;
-  }
-
-  .logo-chip svg {
-    transform: none;
-  }
-
-  .logo-lockup:hover .logo-chip::after {
-    opacity: 0;
   }
 }
