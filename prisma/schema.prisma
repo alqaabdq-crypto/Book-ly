@@ -533,14 +533,14 @@ model Favorite {
   @@unique([customerId, salonId])
 }
 
-/// A Salla store that installed the Book-ly app (Salla App Store).
+/// A Salla store that installed the Turno app (Salla App Store).
 ///
 /// Salla's "Easy mode" OAuth is the only mode allowed for published apps: Salla
 /// exchanges the code itself and posts the tokens to our webhook
 /// (`app.store.authorize`), so a row exists as soon as a merchant installs,
 /// before anyone on our side knows which salon it belongs to. `salonId` is set
 /// only by the link step, which needs both a Salla-verified merchant (the
-/// embedded app page's introspected token) and a signed-in Book-ly owner.
+/// embedded app page's introspected token) and a signed-in Turno owner.
 ///
 /// Tokens are stored AES-256-GCM encrypted with SALLA_TOKEN_KEY; a database dump
 /// alone does not hand out API access to merchants' stores.

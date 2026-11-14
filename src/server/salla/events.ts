@@ -105,7 +105,7 @@ export async function handleSallaEvent(body: SallaEvent): Promise<EventOutcome> 
 
     default:
       // app.updated is followed by a fresh app.store.authorize; settings,
-      // trials and subscriptions mean nothing to Book-ly yet.
+      // trials and subscriptions mean nothing to Turno yet.
       return "ignored";
   }
 }

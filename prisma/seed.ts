@@ -171,7 +171,7 @@ async function main() {
     create: {
       email: "admin@salonhub.sa",
       passwordHash,
-      name: "Book-ly Admin",
+      name: "Turno Admin",
       role: "ADMIN",
     },
   });

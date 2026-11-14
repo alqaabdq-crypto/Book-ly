@@ -78,7 +78,7 @@ const serifmark = Crimson_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Book-ly",
+  title: "Turno",
   description: "Book trusted salons across Saudi Arabia.",
 };
 

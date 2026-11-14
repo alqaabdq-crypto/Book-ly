@@ -7,7 +7,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Book-ly brand system — RedSun-inspired
+   Turno brand system — RedSun-inspired
    Near-black canvas, a bright "oily olive" accent that glows like a rising sun.
 --------------------------------------------------------------------------- */
 
@@ -468,13 +468,13 @@ button[data-pending]::after {
   outline-offset: 4px;
 }
 
-/* The loop: shears → B → shears, for ever. Each holds for ~40% of the cycle,
+/* The loop: shears → T → shears, for ever. Each holds for ~40% of the cycle,
    then spins half a turn and shrinks out while the other spins in from the
    opposite half-turn, so the swap reads as one object turning over rather than
    a cross-fade. The shears end on 360deg, which is where they started, so the
    seam between cycles is invisible. Both groups pivot on the chip's centre. */
 .mark-shears,
-.mark-b {
+.mark-letter {
   transform-box: view-box;
   transform-origin: 16px 16px;
   /* Longhands, not the `animation` shorthand: a shorthand with no name, followed
@@ -488,8 +488,8 @@ button[data-pending]::after {
   animation-name: mark-shears;
 }
 
-.mark-b {
-  animation-name: mark-b;
+.mark-letter {
+  animation-name: mark-letter;
 }
 
 @keyframes mark-shears {
@@ -509,7 +509,7 @@ button[data-pending]::after {
   }
 }
 
-@keyframes mark-b {
+@keyframes mark-letter {
   0%,
   40% {
     opacity: 0;
@@ -529,13 +529,13 @@ button[data-pending]::after {
 /* Motion is decoration here — every state it expresses is already carried by the
    focus ring and the cursor — so it is removed entirely rather than shortened. */
 @media (prefers-reduced-motion: reduce) {
-  /* No loop: the shears stay, the B stays hidden. */
+  /* No loop: the shears stay, the T stays hidden. */
   .mark-shears,
-  .mark-b {
+  .mark-letter {
     animation: none;
   }
 
-  .mark-b {
+  .mark-letter {
     opacity: 0;
   }
 

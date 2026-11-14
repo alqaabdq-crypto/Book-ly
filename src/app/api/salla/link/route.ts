@@ -4,7 +4,7 @@ import { verifyLinkTicket } from "@/server/salla/crypto";
 import { SALLA_LINK_COOKIE } from "@/server/salla/link";
 
 /**
- * The hand-off from the Salla-embedded app page to a normal Book-ly tab.
+ * The hand-off from the Salla-embedded app page to a normal Turno tab.
  *
  * The embedded page lives in an iframe inside the Salla dashboard, where our
  * sign-in cookies may be blocked as third-party. So it opens this URL in a new

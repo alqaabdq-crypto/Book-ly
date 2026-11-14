@@ -11,7 +11,7 @@ import { createCipheriv, createDecipheriv, createHmac, randomBytes, timingSafeEq
  *   strategy, the default for partner apps). The "Token" strategy sends the
  *   secret itself in `Authorization`; both are checked in constant time.
  * - **Link tickets.** Proof, carried from the Salla-embedded app page to a
- *   Book-ly tab, that the person linking is signed in to that Salla store.
+ *   Turno tab, that the person linking is signed in to that Salla store.
  */
 
 const TICKET_TTL_MS = 30 * 60 * 1000;
@@ -26,7 +26,11 @@ function tokenKey(): Buffer {
   return key;
 }
 
-/** A sub-key per purpose, so the ticket signer never shares a key with the cipher. */
+/**
+ * A sub-key per purpose, so the ticket signer never shares a key with the cipher.
+ * The label keeps the product's old name on purpose: it is part of the key, so
+ * renaming it would make every stored Salla token undecryptable.
+ */
 function derived(purpose: string): Buffer {
   return createHmac("sha256", tokenKey()).update(`book-ly/salla/${purpose}`).digest();
 }

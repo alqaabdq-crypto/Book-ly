@@ -1,13 +1,13 @@
-// Book-ly "احجز موعدك" button for Salla storefronts.
+// Turno "احجز موعدك" button for Salla storefronts.
 //
-// Paste into the App Snippet editor of the Book-ly app in the Salla Partners
+// Paste into the App Snippet editor of the Turno app in the Salla Partners
 // portal (JavaScript only; Salla injects it into <body> of every store that
-// installs the app). Replace BOOKLY_ORIGIN with the live Book-ly domain first.
+// installs the app). Replace TURNO_ORIGIN with the live Turno domain first.
 //
-// It asks Book-ly for the store's booking page and shows the button only when
+// It asks Turno for the store's booking page and shows the button only when
 // the store is linked to an approved salon, so an unlinked store shows nothing.
 (function () {
-  var BOOKLY_ORIGIN = "https://book-ly-peach.vercel.app";
+  var TURNO_ORIGIN = "https://book-ly-peach.vercel.app";
 
   function storeId() {
     try {
@@ -25,9 +25,9 @@
   }
 
   function show(url, lang) {
-    if (document.getElementById("bookly-book-now")) return;
+    if (document.getElementById("turno-book-now")) return;
     var a = document.createElement("a");
-    a.id = "bookly-book-now";
+    a.id = "turno-book-now";
     a.href = url;
     a.target = "_blank";
     a.rel = "noopener";
@@ -44,7 +44,7 @@
     var id = storeId();
     if (!id) return;
     var lang = (document.documentElement.lang || "ar").slice(0, 2) === "en" ? "en" : "ar";
-    fetch(BOOKLY_ORIGIN + "/api/salla/booking-link?store=" + encodeURIComponent(id) + "&lang=" + lang)
+    fetch(TURNO_ORIGIN + "/api/salla/booking-link?store=" + encodeURIComponent(id) + "&lang=" + lang)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) { if (d && d.url) show(d.url, lang); })
       .catch(function () {});

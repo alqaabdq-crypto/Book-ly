@@ -1,12 +1,11 @@
-// The wordmark is two faces, and the split is the point: "book" is set in a
-// Minion-class oldstyle serif, "-ly" in Anton — a condensed poster face that is
-// meant to shout. The hyphen goes with the display half, so the heavy run starts
-// on the dash rather than hanging off the end of the serif.
+// The wordmark is two faces, and the split is the point: "Turn" is set in a
+// Minion-class oldstyle serif, the final "o" in Kanit Black italic — a heavy
+// display face, so the last letter reads as a round dial: your turn, on the clock.
 //
-// The split is computed from the brand string rather than hard-coded, so a brand
-// with no hyphen degrades to a single serif run instead of rendering an empty
-// span. Both catalogs carry the same Latin brand, so this behaves identically in
-// English and Arabic.
+// The split is computed from the brand string rather than hard-coded: a hyphen,
+// if there is one, starts the display half (as "Book-ly" did); otherwise the
+// last letter is the display half. Both catalogs carry the same Latin brand, so
+// this behaves identically in English and Arabic.
 //
 // `logo-word` / `logo-word-tail` are the hooks the hover behaviour hangs on; the
 // animation itself lives in globals.css beside the rest of the lockup, so the
@@ -23,19 +22,20 @@ export function Wordmark({
   size: { serif: string; display: string };
   className?: string;
 }) {
-  const at = text.indexOf("-");
+  const hyphen = text.indexOf("-");
+  const at = hyphen > 0 ? hyphen : text.length > 1 ? text.length - 1 : 0;
   const head = at > 0 ? text.slice(0, at) : text;
   const tail = at > 0 ? text.slice(at) : "";
 
   return (
     // dir="ltr" is load-bearing, not decoration. This is a flex row, so on the
     // Arabic pages it inherits direction: rtl and lays its two children out
-    // right-to-left — the logo rendered "ly-book" until this was added. The brand
+    // right-to-left — the old logo rendered "ly-book" until this was added. The brand
     // is a Latin word in both locales, so pinning the run to LTR is also the
     // honest description of it.
     //
     // No gap and no whitespace between the spans: they are one word, and a
-    // screen reader must read "Book-ly", not "Book" then "-ly".
+    // screen reader must read "Turno", not "Turn" then "o".
     <span
       dir="ltr"
       className={`text-gradient-brand logo-word inline-flex items-baseline ${className}`}

@@ -1,7 +1,7 @@
-# Book-ly on the Salla App Store: setup
+# Turno on the Salla App Store: setup
 
-Branch `feature/salla-app`. Lets salons that sell on Salla install Book-ly, link
-their Salla store to their Book-ly salon, show an "احجز موعدك" button on their
+Branch `feature/salla-app`. Lets salons that sell on Salla install Turno, link
+their Salla store to their Turno salon, show an "احجز موعدك" button on their
 storefront, and import their Salla service products.
 
 ## How it works
@@ -11,13 +11,13 @@ storefront, and import their Salla service products.
    exchanges the code and posts the tokens to our webhook as
    `app.store.authorize`. We store them AES-256-GCM encrypted in `SallaStore`.
    Nothing is linked yet.
-2. **Link (merchant, inside Salla).** The merchant opens Book-ly from their Salla
+2. **Link (merchant, inside Salla).** The merchant opens Turno from their Salla
    dashboard. Salla renders our app page `/{locale}/salla/app` in an iframe with
    a short-lived token. We introspect it with Salla
    ([docs](https://docs.salla.dev/embedded-sdk/endpoint-tokent-introspect.md)),
    which proves the visitor is signed in to that store, and mint a 30-minute
    signed ticket.
-3. **Confirm (owner, on Book-ly).** "Link my Book-ly salon" opens a new tab,
+3. **Confirm (owner, on Turno).** "Link my Turno salon" opens a new tab,
    `/api/salla/link?ticket=…`, which parks the ticket in an httpOnly cookie and
    sends them to `/{locale}/owner/salla`. Once they are signed in as the salon
    owner, they press "Link store". The server action re-verifies the ticket.
@@ -46,8 +46,8 @@ Refresh tokens are single-use on Salla, and reusing one revokes the install. So
    - **Webhook security:** Signature (the default). Copy the webhook secret.
    - **App page / embedded URL:** `https://<your-domain>/ar/salla/app`
    - **App Snippet:** paste `docs/salla/app-snippet.js`, after replacing
-     `BOOKLY_ORIGIN` with your domain.
-3. In **Vercel → book-ly → Settings → Environment Variables**, add these.
+     `TURNO_ORIGIN` with your domain.
+3. In **Vercel → book-ly (project name unchanged) → Settings → Environment Variables**, add these.
    Never paste them into a chat.
 
    | Name | Value |
@@ -64,15 +64,29 @@ Refresh tokens are single-use on Salla, and reusing one revokes the install. So
    page, link, import, and check the storefront button. Only then submit the app
    for Salla's review.
 
-## Not verified yet (check on the demo store)
+## Confirmed on the demo store (2026-11-14)
 
-- **Embedded-page token parameter.** The docs say the token is "in the URL" but
-  don't name the parameter. The page accepts `token` or `session_token`.
+Install, app page, link, import and the storefront button all worked end to end
+on a Salla demo store (merchant 1425032842), which settled these:
+
+- **Embedded-page token parameter:** `?token=`, read with the Embedded SDK's
+  `embedded.auth.getToken()`. The dashboard keeps its loading overlay up until
+  the page calls `embedded.ready()`.
+- **Introspection:** `POST https://api.salla.dev/exchange-authority/v1/introspect`
+  (no `/admin/v2`) with header `S-Source: <app id>`; the answer carries
+  `data.merchant_id`.
+- **Store id in the snippet:** `salla.config.get("store.id")` works.
+- **Framing origins:** `salla.sa`, `*.salla.sa` and `*.salla.partners` were
+  enough for the dashboard to frame the app page.
+- **Event times:** `created_at` is Saudi time (UTC+3) with no zone.
+- **Service products:** an On-Demand Service product comes through the API as a
+  bookable type and imports.
+
+## Still not verified
+
 - **Refresh-request fields.** The token endpoint is documented, but the refresh
   body isn't rendered in the docs. We send the standard OAuth fields
   (`grant_type=refresh_token`, `refresh_token`, `client_id`, `client_secret`).
-- **Store id in the snippet.** The snippet tries `salla.config.get("store.id")`,
-  then `salla.config.get("store").id`; the docs don't publish the exact key.
-- **Framing origins.** `next.config.ts` allows `salla.sa`, `*.salla.sa` and
-  `*.salla.partners` to frame the app page. If Salla's dashboard runs on
-  another host, add it there.
+  The demo store's access token expires 2026-11-22; the first refresh, a day
+  before that, is the test. If the import shows "Salla did not answer"
+  after that date, this is the place to look.

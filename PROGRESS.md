@@ -1,6 +1,6 @@
-# book-ly — Progress Report
+# Turno (formerly Book-ly) — Progress Report
 
-**Last updated:** 2026-11-03
+**Last updated:** 2026-11-14
 
 **🚀 Launch deadline: 2026-12-31.** See the launch plan below.
 
@@ -25,7 +25,44 @@ merely mentioned — see the rename entry immediately below.
 > instruction from the project owner: begin a review by stating what was last
 > asked for and what the answer was, before anything else.
 
-**Asked (2026-11-08, latest):** *"Link Book-ly to Salla"*, then *"Build it
+**Asked (2026-11-14, latest):** test the Salla app on a demo store; then fix
+slow saves and buttons with no hover; then *"choose a different name … and fix
+everything that relate to the name we have now"*.
+
+**Answered:**
+- **Salla app tested end to end** on a demo store (merchant 1425032842): install,
+  embedded page, link to Glow Studio, the storefront button, and importing a
+  Salla service product ("Haircut", now live). `docs/salla/SETUP.md` lists what
+  this confirmed. Only the token refresh is untested; the first one is due about
+  2026-11-21.
+- **Speed (`70e6aa2`):** Vercel functions ran in `iad1` (Washington) against
+  Neon in `eu-central-1` (Frankfurt). `vercel.json` now pins them to `fra1`.
+- **Buttons (`70e6aa2`):** every pill lifts and glows on hover, and buttons get
+  the pointer cursor. `SubmitButton` (`src/components/ui/submit-button.tsx`)
+  shows a spinner and blocks double submits while a server action runs.
+- **Renamed Book-ly → Turno** (Spanish/Italian "your turn", an appointment
+  slot). "Book-ly" was dropped because Bookly is an established booking-plugin
+  brand.
+  - **The name was chosen for:** gender-neutral, reads the same in English and
+    Arabic (تورنو), and `turno.sa` was free on 2026-11-14 (`turno.com` belongs
+    to a US company in another field).
+  - **Changed:** both catalogs, `<title>`, the Moyasar invoice description,
+    the wordmark ("Turn" serif + "o" Kanit italic; with no hyphen, the last
+    letter is now the display half), the logo loop letter (B → T), the
+    package name, the README, the Salla docs and snippet (the element id is now
+    `turno-book-now`), and the seeded admin name (also updated in the live row).
+  - **Deliberately not changed:** the HMAC label `book-ly/salla/…` in
+    `src/server/salla/crypto.ts` (it is part of the key; changing it would make
+    every stored Salla token unreadable).
+  - **Not changed yet:** the GitHub repo name, the local folder, the Vercel
+    project name and `book-ly-peach.vercel.app` (until the domain), the Salla
+    Partners app name (the owner changes it in the portal), and the database
+    name/role and `@salonhub.sa` demo logins (go with the demo-data cleanup).
+
+**Still owed:** buy `turno.sa` (the owner), point it at Vercel, then update
+the Salla app's URLs and snippet origin and submit it for review.
+
+**Asked (2026-11-08):** *"Link Book-ly to Salla"*, then *"Build it
 now"*. The owner chose to build it before launch, against the advice to wait.
 
 **Answered:** A Book-ly app for the **Salla App Store**. **Live since

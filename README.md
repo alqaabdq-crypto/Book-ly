@@ -1,17 +1,20 @@
-# Book-ly
+# Turno
 
 A bilingual (English / Arabic, RTL) salon-booking marketplace for Saudi Arabia.
 
-**The product was renamed to "Book-ly" on 2026-09-05**, having been "Fade" since
-2026-08-25 and "Salon Hub" before that, and capitalised on 2026-09-08. Each
-rename covers everything a user sees, in both locales — the brand is the Latin
-word in Arabic too. **The repository followed**, and GitHub redirects the old
-paths.
+**The product was renamed to "Turno" on 2026-11-14** (Spanish/Italian for "your
+turn", an appointment slot), having been "Book-ly" since 2026-09-05, "Fade"
+since 2026-08-25 and "Salon Hub" before that. "Book-ly" was dropped because
+Bookly is an established booking-plugin brand. Each rename covers everything a
+user sees, in both locales — the brand is the Latin word in Arabic too.
 
-⚠️ **The npm package stays `book-ly`, lowercase: npm forbids capitals in package
-names.** So does the Postgres database, its role, and the seeded `@salonhub.sa`
-demo accounts — and that one cannot change without a re-seed, which would destroy
-the demo payment data every revenue figure rests on. See PROGRESS.md.
+⚠️ **Still on the old name, on purpose or for now:** the GitHub repository and
+local folder (`Book-ly`), the Vercel project and its `book-ly-peach.vercel.app`
+address (until the new domain), the Salla token-key label in
+`src/server/salla/crypto.ts` (renaming it would make stored tokens
+undecryptable), and the Postgres database, its role and the seeded
+`@salonhub.sa` demo accounts (removed with the demo data before launch). See
+PROGRESS.md.
 
 Customers discover and book salons — by city, by search, or by what is **nearest
 to them on a map** — then pay in SAR through Moyasar. Salon owners manage their

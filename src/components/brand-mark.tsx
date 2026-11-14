@@ -1,8 +1,9 @@
-// The Book-ly mark: a pair of open shears knocked out of the brand chip.
+// The Turno mark: a pair of open shears knocked out of the brand chip.
 //
 // Why shears and not a calendar, a clock or a bookmark — all of which were
-// drawn and rejected: the *name* already says booking. A calendar mark repeats
-// what "Book-ly" has said and leaves the trade unstated; the shears say the part
+// drawn and rejected: the *name* already says appointments ("turno" is your
+// turn, your slot). A calendar mark repeats what the name has said and leaves
+// the trade unstated; the shears say the part
 // the name cannot, and the lockup then carries both halves of the proposition.
 // They also survive the size that matters. The header renders this at 24px, and
 // at 24px a calendar's slots and a bookmark's notch both close up, while two
@@ -20,9 +21,9 @@
 // other way makes the hover animation look like two loose parts sliding, rather
 // than one tool closing. The rotation itself is in globals.css.
 //
-// The mark alternates, on a loop, between the shears and a serif capital B —
-// the same face as "Book" in the wordmark — so the chip carries both halves of
-// the name in turn. Each is wrapped in its own group (`mark-shears`, `mark-b`)
+// The mark alternates, on a loop, between the shears and a serif capital T —
+// the same face as "Turn" in the wordmark — so the chip carries both halves of
+// the brand in turn. Each is wrapped in its own group (`mark-shears`, `mark-letter`)
 // so the loop's spin can sit on the outside and the hover snip on the inside
 // without the two transforms overwriting each other. The loop is in globals.css.
 export function BrandMark({ className = "h-6 w-6" }: { className?: string }) {
@@ -54,7 +55,7 @@ export function BrandMark({ className = "h-6 w-6" }: { className?: string }) {
               16px, which is what this mark is asked to survive. */}
           <circle cx="16" cy="13.6" r="1.4" fill="currentColor" stroke="none" />
         </g>
-        <g className="mark-b">
+        <g className="mark-letter">
           <text
             x="16"
             y="17"
@@ -66,7 +67,7 @@ export function BrandMark({ className = "h-6 w-6" }: { className?: string }) {
             stroke="none"
             style={{ fontFamily: "var(--font-serifmark)" }}
           >
-            B
+            T
           </text>
         </g>
       </svg>
